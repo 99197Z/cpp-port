@@ -15,14 +15,16 @@ using namespace vex;
 competition Competition;
 brain  Brain;
 
-motor leftMotorA = motor(PORT1, ratio18_1, false);
-motor leftMotorB = motor(PORT10, ratio18_1, false);
-motor_group LeftDrive = motor_group(leftMotorA, leftMotorB);
+motor MotorLf = motor(PORT1, ratio18_1, false);
+motor MotorLb = motor(PORT10, ratio18_1, false);
+motor_group LeftDrive = motor_group(MotorLf, MotorLb);
 
-motor rightMotorA = motor(PORT11, ratio18_1, true); 
-motor rightMotorB = motor(PORT20, ratio18_1, true); 
-motor_group RightDrive = motor_group(rightMotorA, rightMotorB);
-drivetrain Drivetrain=drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
+motor MotorRf = motor(PORT11, ratio18_1, true); 
+motor MotorRb = motor(PORT20, ratio18_1, true); 
+motor_group RightDrive = motor_group(MotorRf, MotorRb);
+drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
+int L = 0;
+int R = 0;
 
 
 controller Controller1 = controller(primary);
@@ -43,6 +45,39 @@ void pre_auton(void) {
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
+}
+
+
+int displayTask() {
+    while(1) {
+      // display some useful info
+      Brain.Screen.setCursor(2,1);
+      Brain.Screen.print( "  MotorLb    speed: %4.0f   position: %6.2f", MotorLb.velocity( percent ), MotorLb.position( rev ) );
+      Brain.Screen.newLine();
+      Brain.Screen.print( "  MotorLf    speed: %4.0f   position: %6.2f", MotorLf.velocity( percent ), MotorLf.position( rev ));
+      Brain.Screen.newLine();
+      Brain.Screen.print( "  MotorRb    speed: %4.0f   position: %6.2f", MotorRb.velocity( percent ), MotorRb.position( rev ));
+      Brain.Screen.newLine();
+      Brain.Screen.print( "  MotorRf    speed: %4.0f   position: %6.2f", MotorRf.velocity( percent ), MotorRf.position( rev ));
+      Brain.Screen.newLine();
+      Brain.Screen.newLine();
+
+      // motor group velocity and position is returned for the first motor in the group
+      Brain.Screen.print( "  leftDrive  speed: %4.0f   position: %6.2f", LeftDrive.velocity( percent ), LeftDrive.position( rev ));
+      Brain.Screen.newLine();
+      Brain.Screen.print( "  rightDrive speed: %4.0f   position: %6.2f", RightDrive.velocity( percent ), RightDrive.position( rev ));
+      Brain.Screen.newLine();
+      Brain.Screen.newLine();
+
+      // drivetrain velocity is the average of the motor velocities for left and right
+      Brain.Screen.print( "  robotDrive speed: %4.0f", Drivetrain.velocity( percent ) );
+      Brain.Screen.newLine();
+
+      // no need to run this loop too quickly
+      wait( 20, timeUnits::msec );
+    }
+
+    return 0;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -74,6 +109,10 @@ void autonomous(void) {
 void usercontrol(void) {
   // User control code here, inside the loop
   while (1) {
+    L = Controller1.Axis3.position();
+    R = Controller1.Axis2.position();
+    LeftDrive.spin(forward,L,percent);
+    RightDrive.spin(forward,R,percent);
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo
     // values based on feedback from the joysticks.
@@ -93,6 +132,7 @@ void usercontrol(void) {
 //
 int main() {
   // Set up callbacks for autonomous and driver control periods.
+  task displayTaskInstance( displayTask );
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
