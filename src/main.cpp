@@ -42,6 +42,7 @@ controller Controller1 = controller(primary);
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
+  Controller1.rumble(".");
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
@@ -72,6 +73,9 @@ int displayTask() {
       // drivetrain velocity is the average of the motor velocities for left and right
       Brain.Screen.print( "  robotDrive speed: %4.0f", Drivetrain.velocity( percent ) );
       Brain.Screen.newLine();
+
+      Controller1.Screen.setCursor(1,1);
+      Controller1.Screen.print(" AVG Temp %.1f",Drivetrain.temperature(percent));
 
       // no need to run this loop too quickly
       wait( 20, timeUnits::msec );
