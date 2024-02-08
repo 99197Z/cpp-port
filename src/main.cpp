@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
-/*    Author:       38302008                                                  */
+/*    Author:       Ben Hunt                                                  */
 /*    Created:      2/7/2024, 3:46:19 PM                                      */
 /*    Description:  V5 project                                                */
 /*                                                                            */
@@ -50,7 +50,6 @@ void display(int code) {
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
-/*                                                                           */
 /*  You may want to perform some actions before the competition starts.      */
 /*  Do them in the following function.  You must return from this function   */
 /*  or the autonomous and usercontrol tasks will not be started.  This       */
@@ -129,12 +128,9 @@ int logTask() {
 }
 
 /*---------------------------------------------------------------------------*/
-/*                                                                           */
 /*                              Autonomous Task                              */
-/*                                                                           */
 /*  This task is used to control your robot during the autonomous phase of   */
 /*  a VEX Competition.                                                       */
-/*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
@@ -146,13 +142,9 @@ void autonomous(void) {
 }
 
 /*---------------------------------------------------------------------------*/
-/*                                                                           */
 /*                              User Control Task                            */
-/*                                                                           */
 /*  This task is used to control your robot during the user control phase of */
 /*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
 void usercontrol(void) {
@@ -182,6 +174,7 @@ void usercontrol(void) {
 int main() {
   // Set up callbacks for autonomous and driver control periods.
   task displayTaskInstance( displayTask );
+  task task(logTask);
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
