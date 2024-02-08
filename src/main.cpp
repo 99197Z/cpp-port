@@ -8,12 +8,21 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include <iostream>
+
 
 using namespace vex;
+using std::cout;
+using std::endl;
 
 // A global instance of compet
 competition Competition;
 brain  Brain;
+
+led LedR1 = led(Brain.ThreeWirePort.A);
+led LedR2 = led(Brain.ThreeWirePort.B);
+led LedY1 = led(Brain.ThreeWirePort.C);
+led LedY2 = led(Brain.ThreeWirePort.D);
 
 motor MotorLf = motor(PORT1, ratio18_1, false);
 motor MotorLb = motor(PORT10, ratio18_1, false);
@@ -31,6 +40,14 @@ controller Controller1 = controller(primary);
 
 // define your global instances of motors and other devices here
 
+
+void display(int code) {
+    LedR1.set(code&8);
+    LedR2.set(code&4);
+    LedY1.set(code&2);
+    LedY2.set(code&1);
+}
+
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
 /*                                                                           */
@@ -43,7 +60,7 @@ controller Controller1 = controller(primary);
 
 void pre_auton(void) {
   Controller1.rumble(".");
-
+  std::cout << "E" << std::endl;
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
 }
@@ -95,6 +112,7 @@ int displayTask() {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
+  display(0b0011);
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
