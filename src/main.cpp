@@ -66,39 +66,66 @@ void pre_auton(void) {
 }
 
 
+/*---------------------------------------------------------------------------*/
+/*                             Threaded Functions                            */
+/*---------------------------------------------------------------------------*/
 int displayTask() {
     while(1) {
-      // display some useful info
-      Brain.Screen.setCursor(2,1);
-      Brain.Screen.print( "  MotorLb    speed: %4.0f   position: %6.2f", MotorLb.velocity( percent ), MotorLb.position( rev ) );
-      Brain.Screen.newLine();
-      Brain.Screen.print( "  MotorLf    speed: %4.0f   position: %6.2f", MotorLf.velocity( percent ), MotorLf.position( rev ));
-      Brain.Screen.newLine();
-      Brain.Screen.print( "  MotorRb    speed: %4.0f   position: %6.2f", MotorRb.velocity( percent ), MotorRb.position( rev ));
-      Brain.Screen.newLine();
-      Brain.Screen.print( "  MotorRf    speed: %4.0f   position: %6.2f", MotorRf.velocity( percent ), MotorRf.position( rev ));
-      Brain.Screen.newLine();
-      Brain.Screen.newLine();
+      	// display some useful info
+      	Brain.Screen.setCursor(2,1);
+      	Brain.Screen.print( "  MotorLb    speed: %4.0f   position: %6.2f", MotorLb.velocity( percent ), MotorLb.position( rev ) );
+      	Brain.Screen.newLine();
+      	Brain.Screen.print( "  MotorLf    speed: %4.0f   position: %6.2f", MotorLf.velocity( percent ), MotorLf.position( rev ));
+      	Brain.Screen.newLine();
+      	Brain.Screen.print( "  MotorRb    speed: %4.0f   position: %6.2f", MotorRb.velocity( percent ), MotorRb.position( rev ));
+      	Brain.Screen.newLine();
+      	Brain.Screen.print( "  MotorRf    speed: %4.0f   position: %6.2f", MotorRf.velocity( percent ), MotorRf.position( rev ));
+      	Brain.Screen.newLine();
+      	Brain.Screen.newLine();
 
-      // motor group velocity and position is returned for the first motor in the group
-      Brain.Screen.print( "  leftDrive  speed: %4.0f   position: %6.2f", LeftDrive.velocity( percent ), LeftDrive.position( rev ));
-      Brain.Screen.newLine();
-      Brain.Screen.print( "  rightDrive speed: %4.0f   position: %6.2f", RightDrive.velocity( percent ), RightDrive.position( rev ));
-      Brain.Screen.newLine();
-      Brain.Screen.newLine();
+      	// motor group velocity and position is returned for the first motor in the group
+      	Brain.Screen.print( "  leftDrive  speed: %4.0f   position: %6.2f", LeftDrive.velocity( percent ), LeftDrive.position( rev ));
+      	Brain.Screen.newLine();
+      	Brain.Screen.print( "  rightDrive speed: %4.0f   position: %6.2f", RightDrive.velocity( percent ), RightDrive.position( rev ));
+      	Brain.Screen.newLine();
+      	Brain.Screen.newLine();
 
-      // drivetrain velocity is the average of the motor velocities for left and right
-      Brain.Screen.print( "  robotDrive speed: %4.0f", Drivetrain.velocity( percent ) );
-      Brain.Screen.newLine();
+      	// drivetrain velocity is the average of the motor velocities for left and right
+      	Brain.Screen.print( "  robotDrive speed: %4.0f", Drivetrain.velocity( percent ) );
+      	Brain.Screen.newLine();
 
-      Controller1.Screen.setCursor(1,1);
-      Controller1.Screen.print(" AVG Temp %.1f",Drivetrain.temperature(percent));
+      	Controller1.Screen.setCursor(1,1);
+      	Controller1.Screen.print(" AVG Temp %.1f",Drivetrain.temperature(percent));
 
-      // no need to run this loop too quickly
-      wait( 20, timeUnits::msec );
+      	// no need to run this loop too quickly
+      	wait( 20, timeUnits::msec );
     }
 
     return 0;
+}
+
+int logTask() {
+	uint8_t tempBuf[0];
+    Brain.SDcard.savefile("match.bin", tempBuf, 0);
+	while (1)
+	{
+      	union thing {
+      	    uint8_t result[12];
+      	    struct motorTag {
+      	      int Lf_temp;
+      	      int Lb_temp;
+      	      int Rf_temp;
+			  int Rb_temp;
+      	    } motors;
+      	} t;
+      	t.motors.Lf_temp = MotorLf.temperature(temperatureUnits::celsius);
+		t.motors.Lb_temp = MotorLb.temperature(temperatureUnits::celsius);
+		t.motors.Rf_temp = MotorRf.temperature(temperatureUnits::celsius);
+		t.motors.Rb_temp = MotorRb.temperature(temperatureUnits::celsius);
+		Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
+		wait( 500, timeUnits::msec );
+	}
+	return 0;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -112,10 +139,10 @@ int displayTask() {
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
-  display(0b0011);
-  // ..........................................................................
-  // Insert autonomous user code here.
-  // ..........................................................................
+  	display(0b0011);
+  	// ..........................................................................
+  	// Insert autonomous user code here.
+  	// ..........................................................................
 }
 
 /*---------------------------------------------------------------------------*/
@@ -129,24 +156,24 @@ void autonomous(void) {
 /*---------------------------------------------------------------------------*/
 
 void usercontrol(void) {
-  // User control code here, inside the loop
-  while (1) {
-    L = Controller1.Axis3.position();
-    R = Controller1.Axis2.position();
-    LeftDrive.spin(forward,L,percent);
-    RightDrive.spin(forward,R,percent);
-    // This is the main execution loop for the user control program.
-    // Each time through the loop your program should update motor + servo
-    // values based on feedback from the joysticks.
+  	// User control code here, inside the loop
+  	while (1) {
+    	L = Controller1.Axis3.position();
+    	R = Controller1.Axis2.position();
+    	LeftDrive.spin(forward,L,percent);
+    	RightDrive.spin(forward,R,percent);
+    	// This is the main execution loop for the user control program.
+    	// Each time through the loop your program should update motor + servo
+    	// values based on feedback from the joysticks.
 
-    // ........................................................................
-    // Insert user code here. This is where you use the joystick values to
-    // update your motors, etc.
-    // ........................................................................
+    	// ........................................................................
+    	// Insert user code here. This is where you use the joystick values to
+    	// update your motors, etc.
+    	// ........................................................................
 
-    wait(20, msec); // Sleep the task for a short amount of time to
-                    // prevent wasted resources.
-  }
+    	wait(20, msec); // Sleep the task for a short amount of time to
+    	                // prevent wasted resources.
+  	}
 }
 
 //
