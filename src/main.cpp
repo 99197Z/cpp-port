@@ -53,7 +53,6 @@ void display(int code) {
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
-/*                                                                           */
 /*  You may want to perform some actions before the competition starts.      */
 /*  Do them in the following function.  You must return from this function   */
 /*  or the autonomous and usercontrol tasks will not be started.  This       */
@@ -105,13 +104,9 @@ int displayTask() {
 }
 
 /*---------------------------------------------------------------------------*/
-/*                                                                           */
 /*                              Autonomous Task                              */
-/*                                                                           */
 /*  This task is used to control your robot during the autonomous phase of   */
 /*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
@@ -122,12 +117,9 @@ void autonomous(void) {
 }
 
 /*---------------------------------------------------------------------------*/
-/*                                                                           */
 /*                              User Control Task                            */
-/*                                                                           */
 /*  This task is used to control your robot during the user control phase of */
 /*  a VEX Competition.                                                       */
-/*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
