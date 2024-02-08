@@ -104,25 +104,27 @@ int displayTask() {
 }
 
 int logTask() {
-	uint8_t tempBuf[0];
-    Brain.SDcard.savefile("match.bin", tempBuf, 0);
-	while (1)
-	{
-      	union thing {
-      	    uint8_t result[12];
-      	    struct motorTag {
-      	      int Lf_temp;
-      	      int Lb_temp;
-      	      int Rf_temp;
-			  int Rb_temp;
-      	    } motors;
-      	} t;
-      	t.motors.Lf_temp = MotorLf.temperature(temperatureUnits::celsius);
-		t.motors.Lb_temp = MotorLb.temperature(temperatureUnits::celsius);
-		t.motors.Rf_temp = MotorRf.temperature(temperatureUnits::celsius);
-		t.motors.Rb_temp = MotorRb.temperature(temperatureUnits::celsius);
-		Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
-		wait( 500, timeUnits::msec );
+	if (Brain.SDcard.isInserted()) {
+		uint8_t tempBuf[0];
+    	Brain.SDcard.savefile("match.bin", tempBuf, 0);
+		while (1)
+		{
+    	  	union thing {
+    	  	    uint8_t result[12];
+    	  	    struct motorTag {
+    	  	      int Lf_temp;
+    	  	      int Lb_temp;
+    	  	      int Rf_temp;
+				  int Rb_temp;
+    	  	    } motors;
+    	  	} t;
+    	  	t.motors.Lf_temp = MotorLf.temperature(temperatureUnits::celsius);
+			t.motors.Lb_temp = MotorLb.temperature(temperatureUnits::celsius);
+			t.motors.Rf_temp = MotorRf.temperature(temperatureUnits::celsius);
+			t.motors.Rb_temp = MotorRb.temperature(temperatureUnits::celsius);
+			Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
+			wait( 500, timeUnits::msec );
+		}
 	}
 	return 0;
 }
