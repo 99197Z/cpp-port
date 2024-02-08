@@ -34,7 +34,7 @@ motor_group RightDrive = motor_group(MotorRf, MotorRb);
 drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
 int L = 0;
 int R = 0;
-
+semaphore semaphore_leds;
 
 controller Controller1 = controller(primary);
 
@@ -42,10 +42,13 @@ controller Controller1 = controller(primary);
 
 
 void display(int code) {
+	semaphore_leds.lock();
     LedR1.set(code&8);
     LedR2.set(code&4);
     LedY1.set(code&2);
     LedY2.set(code&1);
+	wait( 1000, timeUnits::msec );
+	semaphore_leds.unlock();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -137,7 +140,6 @@ int logTask() {
 /*                              Autonomous Task                              */
 /*  This task is used to control your robot during the autonomous phase of   */
 /*  a VEX Competition.                                                       */
-/*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
 void autonomous(void) {
