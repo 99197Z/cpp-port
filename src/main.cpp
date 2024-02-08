@@ -62,10 +62,13 @@ void display(int code) {
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-  Controller1.rumble(".");
-  std::cout << "E" << std::endl;
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
+  Inertial.startCalibration();
+  wait(2000,timeUnits::msec);
+  std::cout << "Inertial Calibration" << std::endl;
+  Controller1.rumble(".");
+  
 }
 
 

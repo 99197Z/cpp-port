@@ -15,6 +15,17 @@
 		"ratio": "cpp",
 		"*.tcc": "cpp",
 		"type_traits": "cpp",
-		"typeinfo": "cpp"
+		"typeinfo": "cpp",
+		"cctype": "cpp",
+		"clocale": "cpp",
+		"cwchar": "cpp",
+		"cwctype": "cpp",
+		"initializer_list": "cpp",
+		"iosfwd": "cpp",
+		"iostream": "cpp",
+		"istream": "cpp",
+		"new": "cpp",
+		"ostream": "cpp",
+		"streambuf": "cpp"
 	}
 }
