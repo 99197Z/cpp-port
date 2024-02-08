@@ -24,14 +24,17 @@ led LedR2 = led(Brain.ThreeWirePort.B);
 led LedY1 = led(Brain.ThreeWirePort.C);
 led LedY2 = led(Brain.ThreeWirePort.D);
 
-motor MotorLf = motor(PORT1, ratio18_1, false);
-motor MotorLb = motor(PORT10, ratio18_1, false);
+inertial Inertial = inertial(PORT1);
+
+motor MotorLf = motor(PORT11, ratio18_1, false);
+motor MotorLb = motor(PORT12, ratio18_1, false);
 motor_group LeftDrive = motor_group(MotorLf, MotorLb);
 
-motor MotorRf = motor(PORT11, ratio18_1, true); 
+motor MotorRf = motor(PORT19, ratio18_1, true); 
 motor MotorRb = motor(PORT20, ratio18_1, true); 
 motor_group RightDrive = motor_group(MotorRf, MotorRb);
-drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
+//drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
+smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 1);
 int L = 0;
 int R = 0;
 
