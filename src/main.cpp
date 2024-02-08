@@ -93,7 +93,7 @@ int displayTask() {
       	Brain.Screen.newLine();
 
       	// drivetrain velocity is the average of the motor velocities for left and right
-      	Brain.Screen.print( "  robotDrive speed: %4.0f", Drivetrain.velocity( percent ) );
+      	Brain.Screen.print( "  Drivetrain speed: %4.0f", Drivetrain.velocity( percent ) );
       	Brain.Screen.newLine();
 
       	Controller1.Screen.setCursor(1,1);
@@ -128,12 +128,14 @@ int logTask() {
 			Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
 			wait( 500, timeUnits::msec );
 		}
+		return 0;
 	} else {
 		display(0b1001);
 		wait( 2000, timeUnits::msec );
 		display(0b0000);
+		return -1;
 	}
-	return 0;
+	
 }
 
 /*---------------------------------------------------------------------------*/
