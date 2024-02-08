@@ -94,7 +94,7 @@ int displayTask() {
       	Brain.Screen.newLine();
 
       	Controller1.Screen.setCursor(1,1);
-      	Controller1.Screen.print(" AVG Temp %.1f",Drivetrain.temperature(percent));
+      	Controller1.Screen.print("Temp %.1f",Drivetrain.temperature(percent));
 
       	// no need to run this loop too quickly
       	wait( 20, timeUnits::msec );
@@ -110,7 +110,7 @@ int logTask() {
 		while (1)
 		{
     	  	union thing {
-    	  	    uint8_t result[12];
+    	  	    uint8_t result[16];
     	  	    struct motorTag {
     	  	      int Lf_temp;
     	  	      int Lb_temp;
