@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
-/*    Author:       38302008                                                  */
+/*    Author:       Ben Hunt                                                  */
 /*    Created:      2/7/2024, 3:46:19 PM                                      */
 /*    Description:  V5 project                                                */
 /*                                                                            */
@@ -15,7 +15,7 @@ using namespace vex;
 using std::cout;
 using std::endl;
 
-// A global instance of compet
+// A global instance of competition
 competition Competition;
 brain  Brain;
 
