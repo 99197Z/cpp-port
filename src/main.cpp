@@ -125,6 +125,10 @@ int logTask() {
 			Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
 			wait( 500, timeUnits::msec );
 		}
+	} else {
+		display(0b1001);
+		wait( 2000, timeUnits::msec );
+		display(0b0000);
 	}
 	return 0;
 }
