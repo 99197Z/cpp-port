@@ -15,7 +15,7 @@ using namespace vex;
 using std::cout;
 using std::endl;
 
-// A global instance of compet
+// A global instance of competition
 competition Competition;
 brain  Brain;
 
@@ -47,7 +47,7 @@ void display(int code) {
     LedR2.set(code&4);
     LedY1.set(code&2);
     LedY2.set(code&1);
-	wait( 1000, timeUnits::msec );
+	wait( 1500, timeUnits::msec );
 	semaphore_leds.unlock();
 }
 
@@ -61,10 +61,10 @@ void display(int code) {
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-  Controller1.rumble(".");
-  std::cout << "E" << std::endl;
-  // All activities that occur before the competition starts
-  // Example: clearing encoders, setting servo positions, ...
+  	Controller1.rumble(".");
+  	std::cout << "E" << std::endl;
+  	// All activities that occur before the competition starts
+  	// Example: clearing encoders, setting servo positions, ...
 }
 
 
@@ -188,11 +188,11 @@ int main() {
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
-  // Run the pre-autonomous function.
-  pre_auton();
+  	// Run the pre-autonomous function.
+  	pre_auton();
 
-  // Prevent main from exiting with an infinite loop.
-  while (true) {
-    wait(100, msec);
-  }
+  	// Prevent main from exiting with an infinite loop.
+  	while (true) {
+  	  	wait(100, msec);
+  	}
 }
