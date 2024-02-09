@@ -24,14 +24,17 @@ led LedR2 = led(Brain.ThreeWirePort.B);
 led LedY1 = led(Brain.ThreeWirePort.C);
 led LedY2 = led(Brain.ThreeWirePort.D);
 
-motor MotorLf = motor(PORT1, ratio18_1, false);
-motor MotorLb = motor(PORT10, ratio18_1, false);
+motor MotorLf = motor(PORT11, ratio18_1, false);
+motor MotorLb = motor(PORT12, ratio18_1, false);
 motor_group LeftDrive = motor_group(MotorLf, MotorLb);
 
-motor MotorRf = motor(PORT11, ratio18_1, true); 
+motor MotorRf = motor(PORT19, ratio18_1, true); 
 motor MotorRb = motor(PORT20, ratio18_1, true); 
 motor_group RightDrive = motor_group(MotorRf, MotorRb);
 drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
+
+motor MotorPuncher = motor(PORT15, ratio18_1, true); 
+
 int L = 0;
 int R = 0;
 semaphore semaphore_leds;
@@ -126,10 +129,6 @@ void autonomous(void) {
 void usercontrol(void) {
   	// User control code here, inside the loop
   	while (1) {
-    	L = Controller1.Axis3.position();
-    	R = Controller1.Axis2.position();
-    	LeftDrive.spin(forward,L,percent);
-    	RightDrive.spin(forward,R,percent);
     	// This is the main execution loop for the user control program.
     	// Each time through the loop your program should update motor + servo
     	// values based on feedback from the joysticks.
@@ -138,6 +137,17 @@ void usercontrol(void) {
     	// Insert user code here. This is where you use the joystick values to
     	// update your motors, etc.
     	// ........................................................................
+		L = Controller1.Axis3.position();
+    	R = Controller1.Axis2.position();
+    	LeftDrive.spin(forward,L,percent);
+    	RightDrive.spin(forward,R,percent);
+
+		// Puncher
+		if (Controller1.ButtonR2.pressing()) {
+			MotorPuncher.spin(forward,200,velocityUnits::rpm);
+		} else {
+			MotorPuncher.spin(forward,0,velocityUnits::rpm);
+		}
 
     	wait(20, msec); // Sleep the task for a short amount of time to
         // prevent wasted resources.
