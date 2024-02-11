@@ -17,7 +17,7 @@ using std::endl;
 
 // A global instance of competition
 competition Competition;
-brain  Brain;
+brain Brain;
 
 led LedR1 = led(Brain.ThreeWirePort.A);
 led LedR2 = led(Brain.ThreeWirePort.B);
