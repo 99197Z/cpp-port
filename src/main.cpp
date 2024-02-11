@@ -8,6 +8,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include "utills.h"
 #include <iostream>
 
 
@@ -97,7 +98,7 @@ int displayTask() {
       	Brain.Screen.newLine();
 
       	Controller1.Screen.setCursor(1,1);
-      	Controller1.Screen.print(" AVG Temp %.1f",Drivetrain.temperature(percent));
+      	Controller1.Screen.print(" AVG Temp %.1f",ConvertPCTdegC(Drivetrain.temperature(percent)));
 
       	// no need to run this loop too quickly
       	wait( 20, timeUnits::msec );
