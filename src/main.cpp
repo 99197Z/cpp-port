@@ -117,12 +117,13 @@ int logTask() {
 		while (1)
 		{
     	  	union thing {
-    	  	    uint8_t result[16];
+    	  	    uint8_t result[20];  // 4 per int
     	  	    struct motorTag {
     	  	      int Lf_temp;
     	  	      int Lb_temp;
     	  	      int Rf_temp;
 				  int Rb_temp;
+				  int Puncher_temp;
     	  	    } motors;
     	  	} t;
     	  	t.motors.Lf_temp = MotorLf.temperature(temperatureUnits::celsius);
