@@ -39,7 +39,7 @@ motor_group RightDrive = motor_group(MotorRf, MotorRb);
 
 motor MotorPuncher = motor(PORT15, ratio18_1, true); 
 
-smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 1);
+smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 1);// 7 / 5
 int L = 0;
 int R = 0;
 semaphore semaphore_leds;
