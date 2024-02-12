@@ -137,8 +137,6 @@ int logTask() {
 		return 0;
 	} else {
 		display(0b1001);
-		wait( 2000, timeUnits::msec );
-		display(0b0000);
 		return -1;
 	}
 	
