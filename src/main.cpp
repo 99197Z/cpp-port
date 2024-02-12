@@ -117,8 +117,8 @@ int logTask() {
 		while (1)
 		{
     	  	union thing {
-    	  	    uint8_t result[20];  // 4 per int
-    	  	    struct motorTag {
+    	  	    uint8_t result[20];  // 4 per int  // 12 for 3
+    	  	    struct loggedData {
     	  	      int Lf_temp;
     	  	      int Lb_temp;
     	  	      int Rf_temp;
@@ -126,10 +126,11 @@ int logTask() {
 				  int Puncher_temp;
     	  	    } motors;
     	  	} t;
-    	  	t.motors.Lf_temp = MotorLf.temperature(temperatureUnits::celsius);
-			t.motors.Lb_temp = MotorLb.temperature(temperatureUnits::celsius);
-			t.motors.Rf_temp = MotorRf.temperature(temperatureUnits::celsius);
-			t.motors.Rb_temp = MotorRb.temperature(temperatureUnits::celsius);
+    	  	t.motors.Lf_temp      = MotorLf.temperature(temperatureUnits::celsius);
+			t.motors.Lb_temp      = MotorLb.temperature(temperatureUnits::celsius);
+			t.motors.Rf_temp      = MotorRf.temperature(temperatureUnits::celsius);
+			t.motors.Rb_temp      = MotorRb.temperature(temperatureUnits::celsius);
+			t.motors.Puncher_temp = MotorPuncher.temperature(temperatureUnits::celsius);
 			Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
 			wait( 500, timeUnits::msec );
 		}
