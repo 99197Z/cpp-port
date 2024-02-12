@@ -9,6 +9,7 @@
 
 #include "vex.h"
 #include "utills.h"
+#include "atton.h"
 #include <iostream>
 
 
@@ -48,15 +49,7 @@ controller Controller1 = controller(primary);
 // define your global instances of motors and other devices here
 
 
-void display(int code) {
-	semaphore_leds.lock();
-    LedR1.set(code&8);
-    LedR2.set(code&4);
-    LedY1.set(code&2);
-    LedY2.set(code&1);
-	wait( 1500, timeUnits::msec );
-	semaphore_leds.unlock();
-}
+
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
