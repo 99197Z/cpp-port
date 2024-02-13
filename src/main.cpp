@@ -174,12 +174,14 @@ void usercontrol(void) {
     	// Insert user code here. This is where you use the joystick values to
     	// update your motors, etc.
     	// ........................................................................
+
+		// drive
 		L = Controller1.Axis3.position();
     	R = Controller1.Axis2.position();
     	LeftDrive.spin(forward,L,percent);
     	RightDrive.spin(forward,R,percent);
 
-		// Puncher
+		// Puncher  -- Remove if not using puncher
 		if (Controller1.ButtonR2.pressing()) {
 			MotorPuncher.spin(forward,200,velocityUnits::rpm);
 		} else {
