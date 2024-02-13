@@ -36,6 +36,10 @@ drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 
 
 motor MotorPuncher = motor(PORT15, ratio18_1, true); 
 
+motor MotorIL = motor(PORT14, ratio18_1, true);
+motor MotorIR = motor(PORT16, ratio18_1, true);
+motor_group IntakeGroup = motor_group(MotorIL, MotorIR);
+
 int L = 0;
 int R = 0;
 semaphore semaphore_leds;
@@ -184,6 +188,14 @@ void usercontrol(void) {
 			MotorPuncher.spin(forward,200,velocityUnits::rpm);
 		} else {
 			MotorPuncher.spin(forward,0,velocityUnits::rpm);
+		}
+
+		if (Controller1.ButtonL2.pressing()) {
+			IntakeGroup.spin(forward,200,velocityUnits::rpm);
+		} else if (Controller1.ButtonL1.pressing()) {
+			IntakeGroup.spin(reverse,200,velocityUnits::rpm);
+		} else {
+			IntakeGroup.spin(forward,0,velocityUnits::rpm);
 		}
 
     	wait(20, msec); // Sleep the task for a short amount of time to
