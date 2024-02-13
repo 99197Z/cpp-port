@@ -77,6 +77,8 @@ struct buttons
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
+    WingGroup.resetPosition();
+
     LedR1.set(0);
     LedR2.set(0);
     LedY1.set(0);
