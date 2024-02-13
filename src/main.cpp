@@ -154,23 +154,7 @@ void autonomous(void) {
   	// ..........................................................................
   	// Insert autonomous user code here.
   	// ..........................................................................
-  	LeftDrive.spin(forward,200,velocityUnits::rpm);
-  	RightDrive.spin(forward,200,velocityUnits::rpm);
-  	wait( 1300, timeUnits::msec );
-
-	MotorPuncher.spin(forward,200,velocityUnits::rpm);
-	wait( 200, timeUnits::msec );
-
-  	LeftDrive.spin(reverse,100,velocityUnits::rpm);
-  	RightDrive.spin(reverse,100,velocityUnits::rpm);
-  	wait( 500, timeUnits::msec );
-
-  	LeftDrive.spin(reverse,200,velocityUnits::rpm);
-  	RightDrive.spin(reverse,200,velocityUnits::rpm);
-  	wait( 1000, timeUnits::msec );
-
-	MotorPuncher.stop(brakeType::coast);
-  	Drivetrain.stop(brakeType::brake);
+  	atton();
 }
 
 /*---------------------------------------------------------------------------*/
