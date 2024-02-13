@@ -9,6 +9,12 @@ enum wingsState { retracted, extended };
 wingsState WingsPos = wingsState::retracted;
 
 
+extern led LedR1;
+extern led LedR2;
+extern led LedY1;
+extern led LedY2;
+extern semaphore semaphore_leds;
+
 double ConvertPCTdegC(double percent) {
     //(percent)                           = (deg - 21.0) / (100 - 21.0) * 100;
     //(percent/100)                       = (deg - 21.0) / (100 - 21.0)
@@ -46,4 +52,15 @@ void toggleWings() {
         retractWings();
         WingsPos = wingsState::retracted;
     }
+}
+
+// Led
+void display(int code) {
+	semaphore_leds.lock();
+    LedR1.set(code&8);
+    LedR2.set(code&4);
+    LedY1.set(code&2);
+    LedY2.set(code&1);
+	wait( 1500, timeUnits::msec );
+	semaphore_leds.unlock();
 }

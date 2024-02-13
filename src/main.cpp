@@ -9,6 +9,7 @@
 
 #include "vex.h"
 #include "utills.h"
+#include "atton.h"
 #include <iostream>
 
 
@@ -25,6 +26,8 @@ led LedR2 = led(Brain.ThreeWirePort.B);
 led LedY1 = led(Brain.ThreeWirePort.C);
 led LedY2 = led(Brain.ThreeWirePort.D);
 
+inertial Inertial = inertial(PORT1);
+
 motor MotorLf = motor(PORT11, ratio18_1, true);
 motor MotorLb = motor(PORT12, ratio18_1, true);
 motor_group LeftDrive = motor_group(MotorLf, MotorLb);
@@ -32,7 +35,7 @@ motor_group LeftDrive = motor_group(MotorLf, MotorLb);
 motor MotorRf = motor(PORT19, ratio18_1, false); 
 motor MotorRb = motor(PORT20, ratio18_1, false); 
 motor_group RightDrive = motor_group(MotorRf, MotorRb);
-drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
+//drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
 
 motor MotorPuncher = motor(PORT15, ratio18_1, true); 
 
@@ -44,6 +47,7 @@ motor MotorWingL = motor(PORT13, ratio18_1, true);
 motor MotorWingR = motor(PORT17, ratio18_1, false);
 motor_group WingGroup = motor_group(MotorWingL, MotorWingR);
 
+smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 1);// 7 / 5
 int L = 0;
 int R = 0;
 semaphore semaphore_leds;
@@ -60,15 +64,7 @@ struct buttons
 // define your global instances of motors and other devices here
 
 
-void display(int code) {
-	semaphore_leds.lock();
-    LedR1.set(code&8);
-    LedR2.set(code&4);
-    LedY1.set(code&2);
-    LedY2.set(code&1);
-	wait( 1500, timeUnits::msec );
-	semaphore_leds.unlock();
-}
+
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -80,11 +76,13 @@ void display(int code) {
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-	extendWings();
-  	Controller1.rumble(".");
-  	std::cout << "E" << std::endl;
-  	// All activities that occur before the competition starts
-  	// Example: clearing encoders, setting servo positions, ...
+  // All activities that occur before the competition starts
+  // Example: clearing encoders, setting servo positions, ...
+  Inertial.startCalibration();
+  wait(2000,timeUnits::msec);
+  std::cout << "Inertial Calibration" << std::endl;
+  Controller1.rumble(".");
+  
 }
 
 
@@ -171,6 +169,23 @@ void autonomous(void) {
   	// ..........................................................................
   	// Insert autonomous user code here.
   	// ..........................................................................
+  	LeftDrive.spin(forward,200,velocityUnits::rpm);
+  	RightDrive.spin(forward,200,velocityUnits::rpm);
+  	wait( 1300, timeUnits::msec );
+
+	MotorPuncher.spin(forward,200,velocityUnits::rpm);
+	wait( 200, timeUnits::msec );
+
+  	LeftDrive.spin(reverse,100,velocityUnits::rpm);
+  	RightDrive.spin(reverse,100,velocityUnits::rpm);
+  	wait( 500, timeUnits::msec );
+
+  	LeftDrive.spin(reverse,200,velocityUnits::rpm);
+  	RightDrive.spin(reverse,200,velocityUnits::rpm);
+  	wait( 1000, timeUnits::msec );
+
+	MotorPuncher.stop(brakeType::coast);
+  	Drivetrain.stop(brakeType::brake);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -181,6 +196,8 @@ void autonomous(void) {
 
 void usercontrol(void) {
   	// User control code here, inside the loop
+	MotorPuncher.stop(brakeType::coast);
+  	Drivetrain.stop(brakeType::brake);
   	while (1) {
     	// This is the main execution loop for the user control program.
     	// Each time through the loop your program should update motor + servo
