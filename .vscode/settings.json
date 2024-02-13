@@ -26,6 +26,11 @@
 		"istream": "cpp",
 		"new": "cpp",
 		"ostream": "cpp",
-		"streambuf": "cpp"
+		"streambuf": "cpp",
+		"array": "cpp",
+		"functional": "cpp",
+		"stdexcept": "cpp",
+		"tuple": "cpp",
+		"utility": "cpp"
 	}
 }

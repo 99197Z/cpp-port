@@ -77,14 +77,14 @@ struct buttons
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
+    // All activities that occur before the competition starts
+    // Example: clearing encoders, setting servo positions, ...
     WingGroup.resetPosition();
-
+    std::cout << "Wing position reset" << std::endl;
     LedR1.set(0);
     LedR2.set(0);
     LedY1.set(0);
     LedY2.set(0);
-    // All activities that occur before the competition starts
-    // Example: clearing encoders, setting servo positions, ...
     Inertial.startCalibration();
     wait(2000,timeUnits::msec);
     std::cout << "Inertial Calibration" << std::endl;
