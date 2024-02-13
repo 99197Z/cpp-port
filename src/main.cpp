@@ -202,6 +202,7 @@ void usercontrol(void) {
 			MotorPuncher.spin(forward,0,velocityUnits::rpm);
 		}
 
+		// intake
 		if (Controller1.ButtonL2.pressing()) {
 			IntakeGroup.spin(forward,200,velocityUnits::rpm);
 		} else if (Controller1.ButtonL1.pressing()) {
