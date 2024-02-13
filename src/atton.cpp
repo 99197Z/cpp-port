@@ -29,8 +29,8 @@ void atton() {
   	RightDrive.spin(forward,200,velocityUnits::rpm);
   	wait( 700, timeUnits::msec );
 
-	LeftDrive.spin(forward,200,velocityUnits::rpm);
-  	RightDrive.spin(forward,-200,velocityUnits::rpm);
+	LeftDrive.spin(forward,200,velocityUnits::rpm);   // SPINNN
+  	RightDrive.spin(forward,-200,velocityUnits::rpm); // SPINNN
 
 	MotorPuncher.stop(brakeType::coast);
 }
