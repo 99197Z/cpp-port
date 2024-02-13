@@ -57,8 +57,8 @@ controller Controller1 = controller(primary);
 
 struct buttons
 {
-	bool up;
-	bool down;
+    bool up;
+    bool down;
 } Buttons;
 
 
@@ -131,37 +131,44 @@ int displayTask() {
 }
 
 int logTask() {
-	if (Brain.SDcard.isInserted()) {
-		uint8_t tempBuf[0];
+    if (Brain.SDcard.isInserted()) {
+        uint8_t tempBuf[0];
       Brain.SDcard.savefile("match.bin", tempBuf, 0);
-		while (1)
-		{
-          union thing {
-              uint8_t result[20];  // 4 per int  // 12 for 3
-              struct loggedData {
-                int Lf_temp;
-                int Lb_temp;
-                int Rf_temp;
-				  int Rb_temp;
-				  int Puncher_temp;
-              } motors;
-          } t;
-          t.motors.Lf_temp      = MotorLf.temperature(temperatureUnits::celsius);
-			t.motors.Lb_temp      = MotorLb.temperature(temperatureUnits::celsius);
-			t.motors.Rf_temp      = MotorRf.temperature(temperatureUnits::celsius);
-			t.motors.Rb_temp      = MotorRb.temperature(temperatureUnits::celsius);
-			t.motors.Puncher_temp = MotorPuncher.temperature(temperatureUnits::celsius);
-			Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
-			wait( 500, timeUnits::msec );
-		}
-		return 0;
-	} else {
-		display(0b1001);
-		wait( 2000, timeUnits::msec );
-		display(0b0000);
-		return -1;
-	}
-	
+        while (1)
+        {
+            union thing {
+                uint8_t result[28];  // 4 per int  // 12 for 3
+                struct loggedData {
+                    int Lf_temp;
+                    int Lb_temp;
+                    int Rf_temp;
+                    int Rb_temp;
+                    int Puncher_temp;
+                    int IntakeL_temp;
+                    int IntakeR_temp;
+                } motors;
+            } t;
+            t.motors.Lf_temp      = MotorLf.temperature(temperatureUnits::celsius);
+            t.motors.Lb_temp      = MotorLb.temperature(temperatureUnits::celsius);
+            t.motors.Rf_temp      = MotorRf.temperature(temperatureUnits::celsius);
+            t.motors.Rb_temp      = MotorRb.temperature(temperatureUnits::celsius);
+
+            t.motors.Puncher_temp = MotorPuncher.temperature(temperatureUnits::celsius);
+
+            t.motors.IntakeL_temp = MotorIntakeL.temperature(temperatureUnits::celsius);
+            t.motors.IntakeR_temp = MotorIntakeR.temperature(temperatureUnits::celsius);
+
+            Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
+            wait( 500, timeUnits::msec );
+        }
+        return 0;
+    } else {
+        display(0b1001);
+        wait( 2000, timeUnits::msec );
+        display(0b0000);
+        return -1;
+    }
+    
 }
 
 /*---------------------------------------------------------------------------*/
@@ -179,8 +186,8 @@ void autonomous(void) {
     RightDrive.spin(forward,200,velocityUnits::rpm);
     wait( 1300, timeUnits::msec );
 
-	MotorPuncher.spin(forward,200,velocityUnits::rpm);
-	wait( 200, timeUnits::msec );
+    MotorPuncher.spin(forward,200,velocityUnits::rpm);
+    wait( 200, timeUnits::msec );
 
     LeftDrive.spin(reverse,100,velocityUnits::rpm);
     RightDrive.spin(reverse,100,velocityUnits::rpm);
@@ -190,7 +197,7 @@ void autonomous(void) {
     RightDrive.spin(reverse,200,velocityUnits::rpm);
     wait( 1000, timeUnits::msec );
 
-	MotorPuncher.stop(brakeType::coast);
+    MotorPuncher.stop(brakeType::coast);
     Drivetrain.stop(brakeType::brake);
 }
 
@@ -202,7 +209,7 @@ void autonomous(void) {
 
 void usercontrol(void) {
     // User control code here, inside the loop
-	MotorPuncher.stop(brakeType::coast);
+    MotorPuncher.stop(brakeType::coast);
     Drivetrain.stop(brakeType::brake);
     while (1) {
       // This is the main execution loop for the user control program.
@@ -213,37 +220,37 @@ void usercontrol(void) {
       // Insert user code here. This is where you use the joystick values to
       // update your motors, etc.
       // ........................................................................
-		L = Controller1.Axis3.position();
+        L = Controller1.Axis3.position();
       R = Controller1.Axis2.position();
       LeftDrive.spin(forward,L,percent);
       RightDrive.spin(forward,R,percent);
 
-		// Puncher
-		if (Controller1.ButtonR2.pressing()) {
-			MotorPuncher.spin(forward,200,velocityUnits::rpm);
-		} else {
-			MotorPuncher.spin(forward,0,velocityUnits::rpm);
-		}
+        // Puncher
+        if (Controller1.ButtonR2.pressing()) {
+            MotorPuncher.spin(forward,200,velocityUnits::rpm);
+        } else {
+            MotorPuncher.spin(forward,0,velocityUnits::rpm);
+        }
 
-		// intake
-		if (Controller1.ButtonL2.pressing()) {
-			IntakeGroup.spin(forward,200,velocityUnits::rpm);
-		} else if (Controller1.ButtonL1.pressing()) {
-			IntakeGroup.spin(reverse,200,velocityUnits::rpm);
-		} else {
-			IntakeGroup.spin(forward,0,velocityUnits::rpm);
-		}
+        // intake
+        if (Controller1.ButtonL2.pressing()) {
+            IntakeGroup.spin(forward,200,velocityUnits::rpm);
+        } else if (Controller1.ButtonL1.pressing()) {
+            IntakeGroup.spin(reverse,200,velocityUnits::rpm);
+        } else {
+            IntakeGroup.spin(forward,0,velocityUnits::rpm);
+        }
 
 
-		//wings
-		if (Controller1.ButtonUp.pressing()) {
-			if (!Buttons.up) {
-				Buttons.up = true;
-				toggleWings();
-			}
-		} else {
-			Buttons.up = false;
-		}
+        //wings
+        if (Controller1.ButtonUp.pressing()) {
+            if (!Buttons.up) {
+                Buttons.up = true;
+                toggleWings();
+            }
+        } else {
+            Buttons.up = false;
+        }
 
       wait(20, msec); // Sleep the task for a short amount of time to
                       // prevent wasted resources.
