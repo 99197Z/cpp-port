@@ -43,6 +43,7 @@ motor MotorIntakeL = motor(PORT14, ratio18_1, true);
 motor MotorIntakeR = motor(PORT16, ratio18_1, true);
 motor_group IntakeGroup = motor_group(MotorIntakeL, MotorIntakeR);
 
+
 motor MotorWingL = motor(PORT13, ratio18_1, true);
 motor MotorWingR = motor(PORT17, ratio18_1, false);
 motor_group WingGroup = motor_group(MotorWingL, MotorWingR);
@@ -76,6 +77,10 @@ struct buttons
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
+  LedR1.set(0);
+  LedR2.set(0);
+  LedY1.set(0);
+  LedY2.set(0);
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
   Inertial.startCalibration();
