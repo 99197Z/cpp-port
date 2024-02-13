@@ -36,9 +36,13 @@ drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 
 
 motor MotorPuncher = motor(PORT15, ratio18_1, true); 
 
-motor MotorIL = motor(PORT14, ratio18_1, true);
-motor MotorIR = motor(PORT16, ratio18_1, true);
-motor_group IntakeGroup = motor_group(MotorIL, MotorIR);
+motor MotorIntakeL = motor(PORT14, ratio18_1, true);
+motor MotorIntakeR = motor(PORT16, ratio18_1, true);
+motor_group IntakeGroup = motor_group(MotorIntakeL, MotorIntakeR);
+
+motor MotorWingL = motor(PORT13, ratio18_1, true);
+motor MotorWingR = motor(PORT17, ratio18_1, false);
+motor_group WingGroup = motor_group(MotorWingL, MotorWingR);
 
 int L = 0;
 int R = 0;
