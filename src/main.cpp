@@ -195,11 +195,11 @@ void usercontrol(void) {
 // Main will set up the competition functions and callbacks.
 //
 int main() {
-  // Set up callbacks for autonomous and driver control periods.
-  task displayTaskInstance( displayTask );
-  task task(logTask);
-  Competition.autonomous(autonomous);
-  Competition.drivercontrol(usercontrol);
+    // Set up callbacks for autonomous and driver control periods.
+    task displayTaskInstance( displayTask );
+    task task(logTask);
+    Competition.autonomous(autonomous);
+    Competition.drivercontrol(usercontrol);
 
   	// Run the pre-autonomous function.
   	pre_auton();
