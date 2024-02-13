@@ -28,12 +28,12 @@ led LedY2 = led(Brain.ThreeWirePort.D);
 
 inertial Inertial = inertial(PORT1);
 
-motor MotorLf = motor(PORT11, ratio18_1, false);
-motor MotorLb = motor(PORT12, ratio18_1, false);
+motor MotorLf = motor(PORT11, ratio18_1, true);
+motor MotorLb = motor(PORT12, ratio18_1, true);
 motor_group LeftDrive = motor_group(MotorLf, MotorLb);
 
-motor MotorRf = motor(PORT19, ratio18_1, true); 
-motor MotorRb = motor(PORT20, ratio18_1, true); 
+motor MotorRf = motor(PORT19, ratio18_1, false); 
+motor MotorRb = motor(PORT20, ratio18_1, false); 
 motor_group RightDrive = motor_group(MotorRf, MotorRb);
 //drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
 
@@ -71,6 +71,9 @@ void pre_auton(void) {
 }
 
 
+/*---------------------------------------------------------------------------*/
+/*                             Threaded Functions                            */
+/*---------------------------------------------------------------------------*/
 int displayTask() {
     while(1) {
       	// display some useful info
@@ -93,17 +96,51 @@ int displayTask() {
       	Brain.Screen.newLine();
 
       	// drivetrain velocity is the average of the motor velocities for left and right
-      	Brain.Screen.print( "  robotDrive speed: %4.0f", Drivetrain.velocity( percent ) );
+      	Brain.Screen.print( "  Drivetrain speed: %4.0f", Drivetrain.velocity( percent ) );
       	Brain.Screen.newLine();
 
       	Controller1.Screen.setCursor(1,1);
-      	Controller1.Screen.print(" AVG Temp %.1f",ConvertPCTdegC(Drivetrain.temperature(percent)));
+      	Controller1.Screen.print("Temp %.1f",ConvertPCTdegC(Drivetrain.temperature(percent)));
 
       	// no need to run this loop too quickly
       	wait( 20, timeUnits::msec );
     }
 
     return 0;
+}
+
+int logTask() {
+	if (Brain.SDcard.isInserted()) {
+		uint8_t tempBuf[0];
+    	Brain.SDcard.savefile("match.bin", tempBuf, 0);
+		while (1)
+		{
+    	  	union thing {
+    	  	    uint8_t result[20];  // 4 per int  // 12 for 3
+    	  	    struct loggedData {
+    	  	      int Lf_temp;
+    	  	      int Lb_temp;
+    	  	      int Rf_temp;
+				  int Rb_temp;
+				  int Puncher_temp;
+    	  	    } motors;
+    	  	} t;
+    	  	t.motors.Lf_temp      = MotorLf.temperature(temperatureUnits::celsius);
+			t.motors.Lb_temp      = MotorLb.temperature(temperatureUnits::celsius);
+			t.motors.Rf_temp      = MotorRf.temperature(temperatureUnits::celsius);
+			t.motors.Rb_temp      = MotorRb.temperature(temperatureUnits::celsius);
+			t.motors.Puncher_temp = MotorPuncher.temperature(temperatureUnits::celsius);
+			Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
+			wait( 500, timeUnits::msec );
+		}
+		return 0;
+	} else {
+		display(0b1001);
+		wait( 2000, timeUnits::msec );
+		display(0b0000);
+		return -1;
+	}
+	
 }
 
 /*---------------------------------------------------------------------------*/
@@ -140,7 +177,6 @@ void autonomous(void) {
 /*                              User Control Task                            */
 /*  This task is used to control your robot during the user control phase of */
 /*  a VEX Competition.                                                       */
-/*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
 void usercontrol(void) {
@@ -169,18 +205,17 @@ void usercontrol(void) {
 		}
 
     	wait(20, msec); // Sleep the task for a short amount of time to
-        // prevent wasted resources.
+    	                // prevent wasted resources.
   	}
 }
 
-//
 // Main will set up the competition functions and callbacks.
-//
 int main() {
-  	// Set up callbacks for autonomous and driver control periods.
-  	task displayTaskInstance( displayTask );
-  	Competition.autonomous(autonomous);
-  	Competition.drivercontrol(usercontrol);
+  // Set up callbacks for autonomous and driver control periods.
+  task displayTaskInstance( displayTask );
+  task task(logTask);
+  Competition.autonomous(autonomous);
+  Competition.drivercontrol(usercontrol);
 
   	// Run the pre-autonomous function.
   	pre_auton();
