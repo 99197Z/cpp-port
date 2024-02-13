@@ -10,7 +10,6 @@ extern motor_group RightDrive;
 extern motor MotorPuncher;
 
 void atton() {
-	extendWings();
     LeftDrive.spin(forward,200,velocityUnits::rpm);
   	RightDrive.spin(forward,200,velocityUnits::rpm);
   	wait( 1300, timeUnits::msec );
@@ -28,5 +27,4 @@ void atton() {
 
 	MotorPuncher.stop(brakeType::coast);
   	Drivetrain.stop(brakeType::brake);
-	retractWings();
 }

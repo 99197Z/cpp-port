@@ -43,11 +43,6 @@ motor MotorIntakeL = motor(PORT14, ratio18_1, true);
 motor MotorIntakeR = motor(PORT16, ratio18_1, true);
 motor_group IntakeGroup = motor_group(MotorIntakeL, MotorIntakeR);
 
-
-motor MotorWingL = motor(PORT13, ratio18_1, true);
-motor MotorWingR = motor(PORT17, ratio18_1, false);
-motor_group WingGroup = motor_group(MotorWingL, MotorWingR);
-
 smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 1);// 7 / 5
 int L = 0;
 int R = 0;
@@ -79,8 +74,6 @@ struct buttons
 void pre_auton(void) {
     // All activities that occur before the competition starts
     // Example: clearing encoders, setting servo positions, ...
-    WingGroup.resetPosition();
-    std::cout << "Wing position reset" << std::endl;
     LedR1.set(0);
     LedR2.set(0);
     LedY1.set(0);
@@ -239,17 +232,6 @@ void usercontrol(void) {
             IntakeGroup.spin(reverse,200,velocityUnits::rpm);
         } else {
             IntakeGroup.spin(forward,0,velocityUnits::rpm);
-        }
-
-
-        //wings
-        if (Controller1.ButtonUp.pressing()) {
-            if (!Buttons.up) {
-                Buttons.up = true;
-                toggleWings();
-            }
-        } else {
-            Buttons.up = false;
         }
 
       wait(20, msec); // Sleep the task for a short amount of time to
