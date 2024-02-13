@@ -5,9 +5,11 @@ using namespace vex;
 
 extern motor_group WingGroup;
 
-enum wingsState { retracted, extended };
+enum wingsState : unsigned int { retracted, extended };
 wingsState WingsPos = wingsState::retracted;
 
+extern motor_group IntakeGroup;
+int intakeSpeed = 100;
 
 extern led LedR1;
 extern led LedR2;
@@ -52,6 +54,18 @@ void toggleWings() {
         retractWings();
         WingsPos = wingsState::retracted;
     }
+}
+
+// Intake
+void IntakeIn() {
+    IntakeGroup.spin(forward,intakeSpeed,rpm);
+}
+void IntakeOut() {
+    IntakeGroup.spin(reverse,intakeSpeed,rpm);
+}
+
+void IntakeStop() {
+    IntakeGroup.spin(forward,0,rpm);
 }
 
 // Led
