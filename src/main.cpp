@@ -50,6 +50,13 @@ semaphore semaphore_leds;
 
 controller Controller1 = controller(primary);
 
+struct buttons
+{
+	bool up;
+	bool down;
+} Buttons;
+
+
 // define your global instances of motors and other devices here
 
 
@@ -73,6 +80,7 @@ void display(int code) {
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
+	
   	Controller1.rumble(".");
   	std::cout << "E" << std::endl;
   	// All activities that occur before the competition starts
@@ -200,6 +208,17 @@ void usercontrol(void) {
 			IntakeGroup.spin(reverse,200,velocityUnits::rpm);
 		} else {
 			IntakeGroup.spin(forward,0,velocityUnits::rpm);
+		}
+
+
+		//wings
+		if (Controller1.ButtonUp.pressing()) {
+			if (!Buttons.up) {
+				Buttons.up = true;
+				toggleWings();
+			}
+		} else {
+			Buttons.up = false;
 		}
 
     	wait(20, msec); // Sleep the task for a short amount of time to

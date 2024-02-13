@@ -3,4 +3,8 @@
 
 double ConvertPCTdegC(double percent);
 
+void extendWings();
+void retractWings();
+void toggleWings();
+
 #endif
