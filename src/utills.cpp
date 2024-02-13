@@ -3,6 +3,11 @@
 
 using namespace vex;
 
+extern motor_group WingGroup;
+
+enum wingsState : unsigned int { retracted, extended };
+wingsState WingsPos = wingsState::retracted;
+
 extern motor_group IntakeGroup;
 int intakeSpeed = 100;
 
@@ -27,11 +32,6 @@ double ConvertPCTdegC(double percent) {
 /*---------------------------------------------------------------------------*/
 
 // Wings
-extern motor_group WingGroup;
-
-enum wingsState : unsigned int { retracted, extended };
-wingsState WingsPos = wingsState::retracted;
-
 void extendWings() {
     if (WingsPos == wingsState::retracted) {
         WingGroup.spinToPosition(135,rotationUnits::deg,false);
@@ -55,7 +55,6 @@ void toggleWings() {
         WingsPos = wingsState::retracted;
     }
 }
-
 
 // Intake
 void IntakeIn() {
