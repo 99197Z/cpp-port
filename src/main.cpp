@@ -80,7 +80,7 @@ void display(int code) {
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
-	
+	extendWings();
   	Controller1.rumble(".");
   	std::cout << "E" << std::endl;
   	// All activities that occur before the competition starts
