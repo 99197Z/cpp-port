@@ -10,11 +10,13 @@
 #include "vex.h"
 #include "utills.h"
 #include <iostream>
+#include <string>
 
 
 using namespace vex;
 using std::cout;
 using std::endl;
+using std::string;
 
 // A global instance of competition
 competition Competition;
