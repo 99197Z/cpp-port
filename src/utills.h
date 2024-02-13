@@ -10,8 +10,4 @@ void extendWings();
 void retractWings();
 void toggleWings();
 
-void IntakeIn();
-void IntakeOut();
-void IntakeStop();
-
 #endif

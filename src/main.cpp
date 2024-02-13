@@ -39,11 +39,6 @@ motor_group RightDrive = motor_group(MotorRf, MotorRb);
 
 motor MotorPuncher = motor(PORT15, ratio18_1, true); 
 
-motor MotorIntakeL = motor(PORT14, ratio18_1, true);
-motor MotorIntakeR = motor(PORT16, ratio18_1, true);
-motor_group IntakeGroup = motor_group(MotorIntakeL, MotorIntakeR);
-
-
 motor MotorWingL = motor(PORT13, ratio18_1, true);
 motor MotorWingR = motor(PORT17, ratio18_1, false);
 motor_group WingGroup = motor_group(MotorWingL, MotorWingR);
@@ -137,15 +132,13 @@ int logTask() {
         while (1)
         {
             union thing {
-                uint8_t result[28];  // 4 per int  // 12 for 3
+                uint8_t result[20];  // 4 per int  // 12 for 3
                 struct loggedData {
                     int Lf_temp;
                     int Lb_temp;
                     int Rf_temp;
                     int Rb_temp;
                     int Puncher_temp;
-                    int IntakeL_temp;
-                    int IntakeR_temp;
                 } motors;
             } t;
             t.motors.Lf_temp      = MotorLf.temperature(temperatureUnits::celsius);
@@ -154,9 +147,6 @@ int logTask() {
             t.motors.Rb_temp      = MotorRb.temperature(temperatureUnits::celsius);
 
             t.motors.Puncher_temp = MotorPuncher.temperature(temperatureUnits::celsius);
-
-            t.motors.IntakeL_temp = MotorIntakeL.temperature(temperatureUnits::celsius);
-            t.motors.IntakeR_temp = MotorIntakeR.temperature(temperatureUnits::celsius);
 
             Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
             wait( 500, timeUnits::msec );
@@ -212,33 +202,24 @@ void usercontrol(void) {
     MotorPuncher.stop(brakeType::coast);
     Drivetrain.stop(brakeType::brake);
     while (1) {
-      // This is the main execution loop for the user control program.
-      // Each time through the loop your program should update motor + servo
-      // values based on feedback from the joysticks.
+        // This is the main execution loop for the user control program.
+        // Each time through the loop your program should update motor + servo
+        // values based on feedback from the joysticks.
 
-      // ........................................................................
-      // Insert user code here. This is where you use the joystick values to
-      // update your motors, etc.
-      // ........................................................................
+        // ........................................................................
+        // Insert user code here. This is where you use the joystick values to
+        // update your motors, etc.
+        // ........................................................................
         L = Controller1.Axis3.position();
-      R = Controller1.Axis2.position();
-      LeftDrive.spin(forward,L,percent);
-      RightDrive.spin(forward,R,percent);
+        R = Controller1.Axis2.position();
+        LeftDrive.spin(forward,L,percent);
+        RightDrive.spin(forward,R,percent);
 
         // Puncher
         if (Controller1.ButtonR2.pressing()) {
             MotorPuncher.spin(forward,200,velocityUnits::rpm);
         } else {
             MotorPuncher.spin(forward,0,velocityUnits::rpm);
-        }
-
-        // intake
-        if (Controller1.ButtonL2.pressing()) {
-            IntakeGroup.spin(forward,200,velocityUnits::rpm);
-        } else if (Controller1.ButtonL1.pressing()) {
-            IntakeGroup.spin(reverse,200,velocityUnits::rpm);
-        } else {
-            IntakeGroup.spin(forward,0,velocityUnits::rpm);
         }
 
 
@@ -259,11 +240,11 @@ void usercontrol(void) {
 
 // Main will set up the competition functions and callbacks.
 int main() {
-  // Set up callbacks for autonomous and driver control periods.
-  task displayTaskInstance( displayTask );
-  task task(logTask);
-  Competition.autonomous(autonomous);
-  Competition.drivercontrol(usercontrol);
+    // Set up callbacks for autonomous and driver control periods.
+    task displayTaskInstance( displayTask );
+    task task(logTask);
+    Competition.autonomous(autonomous);
+    Competition.drivercontrol(usercontrol);
 
     // Run the pre-autonomous function.
     pre_auton();

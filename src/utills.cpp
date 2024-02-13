@@ -7,8 +7,6 @@ extern motor_group WingGroup;
 enum wingsState : unsigned int { retracted, extended };
 wingsState WingsPos = wingsState::retracted;
 
-extern motor_group IntakeGroup;
-int intakeSpeed = 100;
 
 extern led LedR1;
 extern led LedR2;
@@ -55,17 +53,6 @@ void toggleWings() {
     }
 }
 
-// Intake
-void IntakeIn() {
-    IntakeGroup.spin(forward,intakeSpeed,rpm);
-}
-void IntakeOut() {
-    IntakeGroup.spin(reverse,intakeSpeed,rpm);
-}
-
-void IntakeStop() {
-    IntakeGroup.spin(forward,0,rpm);
-}
 
 // Led
 void display(int code) {
