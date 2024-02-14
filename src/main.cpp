@@ -119,8 +119,9 @@ int logTask() {
 		while (1)
 		{
     	  	union thing {
-    	  	    uint8_t result[20];  // 4 per int  // 12 for 3
+    	  	    uint8_t result[24];  // 4 per int  // 12 for 3
     	  	    struct loggedData {
+                  int start;
     	  	      int Lf_temp;
     	  	      int Lb_temp;
     	  	      int Rf_temp;
@@ -128,6 +129,7 @@ int logTask() {
 				  int Puncher_temp;
     	  	    } motors;
     	  	} t;
+            t.motors.start = 255;
     	  	t.motors.Lf_temp      = MotorLf.temperature(temperatureUnits::celsius);
 			t.motors.Lb_temp      = MotorLb.temperature(temperatureUnits::celsius);
 			t.motors.Rf_temp      = MotorRf.temperature(temperatureUnits::celsius);
