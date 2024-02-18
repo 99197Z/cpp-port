@@ -119,14 +119,14 @@ int logTask() {
 		while (1)
 		{
     	  	union thing {
-    	  	    uint8_t result[24];  // 4 per int  // 12 for 3
+    	  	    uint8_t result[6];  // 4 per int  // 12 for 3
     	  	    struct loggedData {
-                  int start;
-    	  	      int Lf_temp;
-    	  	      int Lb_temp;
-    	  	      int Rf_temp;
-				  int Rb_temp;
-				  int Puncher_temp;
+                  char start;
+    	  	      char Lf_temp;
+    	  	      char Lb_temp;
+    	  	      char Rf_temp;
+				  char Rb_temp;
+				  char Puncher_temp;
     	  	    } motors;
     	  	} t;
             t.motors.start = 255;
