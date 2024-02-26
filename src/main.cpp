@@ -134,14 +134,14 @@ int logTask() {
 		while (1)
 		{
     	  	union thing {
-    	  	    uint8_t result[6];  // 4 per int 1 per char  // 12 for 3
+    	  	    uint8_t result[9];  // 4 per int 1 per char  // 12 for 3
     	  	    struct loggedData {
                   char start;
     	  	      char Lf_temp;
     	  	      char Lb_temp;
     	  	      char Rf_temp;
 				  char Rb_temp;
-				  char Puncher_temp;
+				  int  Wings_angle;
     	  	    } motors;
     	  	} t;
             t.motors.start = 255;
@@ -149,7 +149,7 @@ int logTask() {
 			t.motors.Lb_temp      = MotorLb.temperature(temperatureUnits::celsius);
 			t.motors.Rf_temp      = MotorRf.temperature(temperatureUnits::celsius);
 			t.motors.Rb_temp      = MotorRb.temperature(temperatureUnits::celsius);
-			t.motors.Puncher_temp = MotorPuncher.temperature(temperatureUnits::celsius);
+			t.motors.Wings_angle  = WingGroup.position(rotationUnits::deg);
 			Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
 			wait( 500, timeUnits::msec );
 		}
