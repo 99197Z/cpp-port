@@ -13,6 +13,10 @@ extern led LedR2;
 extern led LedY1;
 extern led LedY2;
 extern semaphore semaphore_leds;
+#include <memory>
+#include <string>
+using std::string;
+
 
 double ConvertPCTdegC(double percent) {
     //(percent)                           = (deg - 21.0) / (100 - 21.0) * 100;

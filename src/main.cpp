@@ -11,11 +11,13 @@
 #include "utills.h"
 #include "atton.h"
 #include <iostream>
+#include <string>
 
 
 using namespace vex;
 using std::cout;
 using std::endl;
+using std::string;
 
 // A global instance of competition
 competition Competition;
@@ -126,39 +128,37 @@ int displayTask() {
 }
 
 int logTask() {
-    if (Brain.SDcard.isInserted()) {
-        uint8_t tempBuf[0];
-      Brain.SDcard.savefile("match.bin", tempBuf, 0);
-        while (1)
-        {
-            union thing {
-                uint8_t result[20];  // 4 per int  // 12 for 3
-                struct loggedData {
-                    int Lf_temp;
-                    int Lb_temp;
-                    int Rf_temp;
-                    int Rb_temp;
-                    int Puncher_temp;
-                } motors;
-            } t;
-            t.motors.Lf_temp      = MotorLf.temperature(temperatureUnits::celsius);
-            t.motors.Lb_temp      = MotorLb.temperature(temperatureUnits::celsius);
-            t.motors.Rf_temp      = MotorRf.temperature(temperatureUnits::celsius);
-            t.motors.Rb_temp      = MotorRb.temperature(temperatureUnits::celsius);
-
-            t.motors.Puncher_temp = MotorPuncher.temperature(temperatureUnits::celsius);
-
-            Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
-            wait( 500, timeUnits::msec );
-        }
-        return 0;
-    } else {
-        display(0b1001);
-        wait( 2000, timeUnits::msec );
-        display(0b0000);
-        return -1;
-    }
-    
+	if (Brain.SDcard.isInserted()) {
+		uint8_t tempBuf[0];
+    	Brain.SDcard.savefile("match.bin", tempBuf, 0);
+		while (1)
+		{
+    	  	union thing {
+    	  	    uint8_t result[6];  // 4 per int 1 per char  // 12 for 3
+    	  	    struct loggedData {
+                  char start;
+    	  	      char Lf_temp;
+    	  	      char Lb_temp;
+    	  	      char Rf_temp;
+				  char Rb_temp;
+				  char Puncher_temp;
+    	  	    } motors;
+    	  	} t;
+            t.motors.start = 255;
+    	  	t.motors.Lf_temp      = MotorLf.temperature(temperatureUnits::celsius);
+			t.motors.Lb_temp      = MotorLb.temperature(temperatureUnits::celsius);
+			t.motors.Rf_temp      = MotorRf.temperature(temperatureUnits::celsius);
+			t.motors.Rb_temp      = MotorRb.temperature(temperatureUnits::celsius);
+			t.motors.Puncher_temp = MotorPuncher.temperature(temperatureUnits::celsius);
+			Brain.SDcard.appendfile("match.bin", t.result, sizeof(t.result));
+			wait( 500, timeUnits::msec );
+		}
+		return 0;
+	} else {
+		display(0b1001);
+		return -1;
+	}
+	
 }
 
 /*---------------------------------------------------------------------------*/
