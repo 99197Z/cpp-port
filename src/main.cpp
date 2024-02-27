@@ -41,8 +41,8 @@ motor_group RightDrive = motor_group(MotorRf, MotorRb);
 
 motor MotorPuncher = motor(PORT15, ratio18_1, true); 
 
-motor MotorWingL = motor(PORT18, ratio18_1, false);
-motor MotorWingR = motor(PORT6, ratio18_1, true);
+motor MotorWingL = motor(PORT18, ratio18_1, true);
+motor MotorWingR = motor(PORT6, ratio18_1, false);
 motor_group WingGroup = motor_group(MotorWingL, MotorWingR);
 
 smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 1);// 7 / 5
@@ -76,7 +76,8 @@ struct buttons
 void pre_auton(void) {
     // All activities that occur before the competition starts
     // Example: clearing encoders, setting servo positions, ...
-    WingGroup.resetPosition();
+    MotorWingL.resetPosition();
+    MotorWingR.resetPosition();
     std::cout << "Wing position reset" << std::endl;
     LedR1.set(0);
     LedR2.set(0);
