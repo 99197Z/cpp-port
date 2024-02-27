@@ -181,13 +181,6 @@ void usercontrol(void) {
     	LeftDrive.spin(forward,L,percent);
     	RightDrive.spin(forward,R,percent);
 
-		// Puncher  -- Remove if not using puncher
-		if (Controller1.ButtonR2.pressing()) {
-			MotorPuncher.spin(forward,200,velocityUnits::rpm);
-		} else {
-			MotorPuncher.spin(forward,0,velocityUnits::rpm);
-		}
-
     	wait(20, msec); // Sleep the task for a short amount of time to
     	                // prevent wasted resources.
   	}
