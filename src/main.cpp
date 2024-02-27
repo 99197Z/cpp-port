@@ -30,19 +30,19 @@ led LedY2 = led(Brain.ThreeWirePort.D);
 
 inertial Inertial = inertial(PORT1);
 
-motor MotorLf = motor(PORT11, ratio18_1, true);
-motor MotorLb = motor(PORT12, ratio18_1, true);
+motor MotorLf = motor(PORT19, ratio18_1, true);
+motor MotorLb = motor(PORT20, ratio18_1, true);
 motor_group LeftDrive = motor_group(MotorLf, MotorLb);
 
-motor MotorRf = motor(PORT19, ratio18_1, false); 
-motor MotorRb = motor(PORT20, ratio18_1, false); 
+motor MotorRf = motor(PORT5, ratio18_1, false); 
+motor MotorRb = motor(PORT7, ratio18_1, false); 
 motor_group RightDrive = motor_group(MotorRf, MotorRb);
 //drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
 
 motor MotorPuncher = motor(PORT15, ratio18_1, true); 
 
-motor MotorWingL = motor(PORT13, ratio18_1, true);
-motor MotorWingR = motor(PORT17, ratio18_1, false);
+motor MotorWingL = motor(PORT18, ratio18_1, false);
+motor MotorWingR = motor(PORT6, ratio18_1, true);
 motor_group WingGroup = motor_group(MotorWingL, MotorWingR);
 
 smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 1);// 7 / 5
