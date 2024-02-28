@@ -232,11 +232,6 @@ int main() {
     task task(logTask);
     Competition.autonomous(autonomous);
     Competition.drivercontrol(usercontrol);
-    // Set up callbacks for autonomous and driver control periods.
-    task displayTaskInstance( displayTask );
-    task task(logTask);
-    Competition.autonomous(autonomous);
-    Competition.drivercontrol(usercontrol);
 
     // Run the pre-autonomous function.
     pre_auton();
