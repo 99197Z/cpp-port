@@ -35,13 +35,18 @@ double ConvertPCTdegC(double percent) {
 // Wings
 void extendWings() {
     if (WingsPos == wingsState::retracted) {
-        WingGroup.spinToPosition(90,rotationUnits::deg,false);
+        WingGroup.setVelocity(50,rpm);
+        WingGroup.spinToPosition(90,rotationUnits::deg,true);
         WingsPos = wingsState::extended;
+        //WingGroup.setVelocity(1,rpm);
+        //WingGroup.spin(forward);
+        WingGroup.stop(brakeType::brake);
     }
 }
 
 void retractWings() {
     if (WingsPos == wingsState::extended) {
+        WingGroup.setVelocity(50,rpm);
         WingGroup.spinToPosition(0,rotationUnits::deg,false);
         WingsPos = wingsState::retracted;
     }
