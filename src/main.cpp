@@ -45,7 +45,7 @@ motor MotorWingL = motor(PORT18, ratio18_1, true);
 motor MotorWingR = motor(PORT6, ratio18_1, false);
 motor_group WingGroup = motor_group(MotorWingL, MotorWingR);
 
-smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 1);// 7 / 5
+smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 7/5);// 7 / 5
 int L = 0;
 int R = 0;
 semaphore semaphore_leds;
