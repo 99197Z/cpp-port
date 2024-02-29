@@ -35,14 +35,14 @@ double ConvertPCTdegC(double percent) {
 // Wings
 void extendWings() {
     if (WingsPos == wingsState::retracted) {
-        WingGroup.spinToPosition(90,rotationUnits::deg,false);
+        WingGroup.spinToPosition(90,rotationUnits::deg,true);
         WingsPos = wingsState::extended;
     }
 }
 
 void retractWings() {
     if (WingsPos == wingsState::extended) {
-        WingGroup.spinToPosition(0,rotationUnits::deg,false);
+        WingGroup.spinToPosition(0,rotationUnits::deg,true);
         WingsPos = wingsState::retracted;
     }
 }

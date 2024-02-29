@@ -86,7 +86,7 @@ void pre_auton(void) {
     Inertial.startCalibration();
     wait(2000,timeUnits::msec);
     std::cout << "Inertial Calibration" << std::endl;
-    WingGroup.setVelocity(50,rpm);
+    WingGroup.setVelocity(200,rpm);
     Controller1.rumble(".");
     std::cout << "RDY" << std::endl;
 }
