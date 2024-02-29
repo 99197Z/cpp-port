@@ -81,13 +81,13 @@ int displayTask() {
     while(1) {
       	// display some useful info
       	Brain.Screen.setCursor(2,1);
-      	Brain.Screen.print( "  MotorLb    speed: %4.0f   position: %6.2f", MotorLb.velocity( percent ), MotorLb.position( rev ) );
+      	Brain.Screen.print( "  MotorLb    speed: %4.0f   temps *C: %6.2f", MotorLb.velocity( percent ), MotorLb.temperature(temperatureUnits::celsius) );
       	Brain.Screen.newLine();
-      	Brain.Screen.print( "  MotorLf    speed: %4.0f   position: %6.2f", MotorLf.velocity( percent ), MotorLf.position( rev ));
+      	Brain.Screen.print( "  MotorLf    speed: %4.0f   temps *C: %6.2f", MotorLf.velocity( percent ), MotorLf.temperature(temperatureUnits::celsius));
       	Brain.Screen.newLine();
-      	Brain.Screen.print( "  MotorRb    speed: %4.0f   position: %6.2f", MotorRb.velocity( percent ), MotorRb.position( rev ));
+      	Brain.Screen.print( "  MotorRb    speed: %4.0f   temps *C: %6.2f", MotorRb.velocity( percent ), MotorRb.temperature(temperatureUnits::celsius));
       	Brain.Screen.newLine();
-      	Brain.Screen.print( "  MotorRf    speed: %4.0f   position: %6.2f", MotorRf.velocity( percent ), MotorRf.position( rev ));
+      	Brain.Screen.print( "  MotorRf    speed: %4.0f   temps *C: %6.2f", MotorRf.velocity( percent ), MotorRf.temperature(temperatureUnits::celsius));
       	Brain.Screen.newLine();
       	Brain.Screen.newLine();
 
