@@ -13,9 +13,16 @@ extern led LedR2;
 extern led LedY1;
 extern led LedY2;
 extern semaphore semaphore_leds;
+
+extern motor MotorLf;
+extern motor MotorLb;
+extern motor MotorRf;
+extern motor MotorRb;
+
 #include <memory>
 #include <string>
 using std::string;
+using std::max;
 
 
 double ConvertPCTdegC(double percent) {
@@ -25,6 +32,19 @@ double ConvertPCTdegC(double percent) {
     //(percent/100) * (100 - 21.0) + 21.0 = deg
 
     return ((percent/100)*(100 - 21.0))+21.0;
+}
+
+double max4(double a, double b, double c, double d) {
+    return max(max(a, b), max(c, d));
+}
+
+double motorTemps() {
+    return max4(
+        MotorLf.temperature(),
+        MotorLb.temperature(),
+        MotorRf.temperature(),
+        MotorRb.temperature()
+    );
 }
 
 
