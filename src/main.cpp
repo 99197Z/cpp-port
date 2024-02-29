@@ -58,9 +58,6 @@ struct buttons
 } Buttons;
 
 
-// define your global instances of motors and other devices here
-
-
 
 
 /*---------------------------------------------------------------------------*/
@@ -136,7 +133,7 @@ int logTask() {
 		while (1)
 		{
     	  	union thing {
-    	  	    uint8_t result[9];  // 4 per int 1 per char  // 12 for 3
+    	  	    uint8_t result[9];  // 4 per int, 1 per char
     	  	    struct loggedData {
                   char start;
     	  	      char Lf_temp;
