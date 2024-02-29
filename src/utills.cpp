@@ -1,6 +1,14 @@
 #include "vex.h"
+#include <iostream>
+#include <string>
+
+
 
 using namespace vex;
+
+using std::cout;
+using std::endl;
+using std::string;
 
 extern motor_group WingGroup;
 
@@ -80,16 +88,18 @@ void toggleWings() {
 }
 
 int hardwareTask() {
+    std::cout << "Hardware Started" << std::endl;
     while (1) {
         if (WingsPos != WingsGoal) {
-            if (WingsGoal == wingsState::retracted) {
+            std::cout << "Wings" << std::endl;
+            if (WingsPos == wingsState::retracted) {
                 extendWings();
-            } else if (WingsGoal == wingsState::extended) {
+            } else if (WingsPos == wingsState::extended) {
                 retractWings();
             }
         }
 
-        wait(250, msec);
+        wait(125, msec);
     }
     
 }
