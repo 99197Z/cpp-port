@@ -229,7 +229,8 @@ void usercontrol(void) {
 int main() {
     // Set up callbacks for autonomous and driver control periods.
     task displayTaskInstance( displayTask );
-    task task(logTask);
+    task logingTask(logTask);
+    task hardwareActionTask(hardwareTask);
     Competition.autonomous(autonomous);
     Competition.drivercontrol(usercontrol);
 
