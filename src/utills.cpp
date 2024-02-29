@@ -24,6 +24,8 @@ extern motor MotorRb;
 using std::string;
 using std::max;
 
+int wingMoveAtempts = 0;
+
 
 double ConvertPCTdegC(double percent) {
     //(percent)                           = (deg - 21.0) / (100 - 21.0) * 100;
