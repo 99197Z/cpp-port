@@ -40,10 +40,10 @@ double max4(double a, double b, double c, double d) {
 
 double motorTemps() {
     return max4(
-        MotorLf.temperature(),
-        MotorLb.temperature(),
-        MotorRf.temperature(),
-        MotorRb.temperature()
+        MotorLf.temperature(temperatureUnits::celsius),
+        MotorLb.temperature(temperatureUnits::celsius),
+        MotorRf.temperature(temperatureUnits::celsius),
+        MotorRb.temperature(temperatureUnits::celsius)
     );
 }
 

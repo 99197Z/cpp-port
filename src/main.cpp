@@ -120,7 +120,7 @@ int displayTask() {
         Brain.Screen.newLine();
 
         Controller1.Screen.setCursor(1,1);
-        Controller1.Screen.print("Temp %.1f",motorTemps());
+        Controller1.Screen.print("Temp %2.1f",motorTemps());
 
         // no need to run this loop too quickly
         wait( 20, timeUnits::msec );
