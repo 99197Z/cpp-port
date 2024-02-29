@@ -14,9 +14,16 @@ extern led LedR2;
 extern led LedY1;
 extern led LedY2;
 extern semaphore semaphore_leds;
+
+extern motor MotorLf;
+extern motor MotorLb;
+extern motor MotorRf;
+extern motor MotorRb;
+
 #include <memory>
 #include <string>
 using std::string;
+using std::max;
 
 
 double ConvertPCTdegC(double percent) {
@@ -28,6 +35,19 @@ double ConvertPCTdegC(double percent) {
     return ((percent/100)*(100 - 21.0))+21.0;
 }
 
+double max4(double a, double b, double c, double d) {
+    return max(max(a, b), max(c, d));
+}
+
+double motorTemps() {
+    return max4(
+        MotorLf.temperature(temperatureUnits::celsius),
+        MotorLb.temperature(temperatureUnits::celsius),
+        MotorRf.temperature(temperatureUnits::celsius),
+        MotorRb.temperature(temperatureUnits::celsius)
+    );
+}
+
 
 /*---------------------------------------------------------------------------*/
 /*                             External  Hardware                            */
@@ -36,8 +56,11 @@ double ConvertPCTdegC(double percent) {
 // Wings
 void extendWings() {
     if (WingsPos == wingsState::retracted) {
-        WingGroup.spinToPosition(90,rotationUnits::deg,true);
+        WingGroup.spinToPosition(135,rotationUnits::deg,true);
         WingsPos = wingsState::extended;
+        //WingGroup.setVelocity(1,rpm);
+        //WingGroup.spin(forward);
+        WingGroup.stop(brakeType::brake);
     }
 }
 

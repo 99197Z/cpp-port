@@ -39,13 +39,12 @@ motor MotorRb = motor(PORT7, ratio18_1, false);
 motor_group RightDrive = motor_group(MotorRf, MotorRb);
 //drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
 
-motor MotorPuncher = motor(PORT15, ratio18_1, true); 
 
-motor MotorWingL = motor(PORT18, ratio18_1, true);
+motor MotorWingL = motor(PORT17, ratio18_1, true);
 motor MotorWingR = motor(PORT6, ratio18_1, false);
 motor_group WingGroup = motor_group(MotorWingL, MotorWingR);
 
-smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 1);// 7 / 5
+smartdrive Drivetrain= smartdrive(LeftDrive, RightDrive, Inertial, 319.19, 320, 165, mm, 7/5);// 7 / 5
 int L = 0;
 int R = 0;
 semaphore semaphore_leds;
@@ -57,9 +56,6 @@ struct buttons
     bool up;
     bool down;
 } Buttons;
-
-
-// define your global instances of motors and other devices here
 
 
 
@@ -96,18 +92,19 @@ void pre_auton(void) {
 /*                             Threaded Functions                            */
 /*---------------------------------------------------------------------------*/
 int displayTask() {
+    std::cout << "Display Started" << std::endl;
     while(1) {
-        // display some useful info
-        Brain.Screen.setCursor(2,1);
-        Brain.Screen.print( "  MotorLb    speed: %4.0f   position: %6.2f", MotorLb.velocity( percent ), MotorLb.position( rev ) );
-        Brain.Screen.newLine();
-        Brain.Screen.print( "  MotorLf    speed: %4.0f   position: %6.2f", MotorLf.velocity( percent ), MotorLf.position( rev ));
-        Brain.Screen.newLine();
-        Brain.Screen.print( "  MotorRb    speed: %4.0f   position: %6.2f", MotorRb.velocity( percent ), MotorRb.position( rev ));
-        Brain.Screen.newLine();
-        Brain.Screen.print( "  MotorRf    speed: %4.0f   position: %6.2f", MotorRf.velocity( percent ), MotorRf.position( rev ));
-        Brain.Screen.newLine();
-        Brain.Screen.newLine();
+      	// display some useful info
+      	Brain.Screen.setCursor(2,1);
+      	Brain.Screen.print( "  MotorLb    speed: %4.0f   temps *C: %6.2f", MotorLb.velocity( percent ), MotorLb.temperature(temperatureUnits::celsius) );
+      	Brain.Screen.newLine();
+      	Brain.Screen.print( "  MotorLf    speed: %4.0f   temps *C: %6.2f", MotorLf.velocity( percent ), MotorLf.temperature(temperatureUnits::celsius));
+      	Brain.Screen.newLine();
+      	Brain.Screen.print( "  MotorRb    speed: %4.0f   temps *C: %6.2f", MotorRb.velocity( percent ), MotorRb.temperature(temperatureUnits::celsius));
+      	Brain.Screen.newLine();
+      	Brain.Screen.print( "  MotorRf    speed: %4.0f   temps *C: %6.2f", MotorRf.velocity( percent ), MotorRf.temperature(temperatureUnits::celsius));
+      	Brain.Screen.newLine();
+      	Brain.Screen.newLine();
 
         // motor group velocity and position is returned for the first motor in the group
         Brain.Screen.print( "  leftDrive  speed: %4.0f   position: %6.2f", LeftDrive.velocity( percent ), LeftDrive.position( rev ));
@@ -121,7 +118,7 @@ int displayTask() {
         Brain.Screen.newLine();
 
         Controller1.Screen.setCursor(1,1);
-        Controller1.Screen.print("Temp %.1f",ConvertPCTdegC(Drivetrain.temperature(percent)));
+        Controller1.Screen.print("Temp %2.1f",motorTemps());
 
         // no need to run this loop too quickly
         wait( 20, timeUnits::msec );
@@ -132,12 +129,13 @@ int displayTask() {
 
 int logTask() {
 	if (Brain.SDcard.isInserted()) {
+        std::cout << "logging Started" << std::endl;
 		uint8_t tempBuf[0];
     	Brain.SDcard.savefile("match.bin", tempBuf, 0);
 		while (1)
 		{
     	  	union thing {
-    	  	    uint8_t result[9];  // 4 per int 1 per char  // 12 for 3
+    	  	    uint8_t result[9];  // 4 per int, 1 per char
     	  	    struct loggedData {
                   char start;
     	  	      char Lf_temp;
@@ -159,6 +157,7 @@ int logTask() {
 		return 0;
 	} else {
 		display(0b1001);
+        std::cout << "No SD Card, logging can not happen" << std::endl;
 		return -1;
 	}
 	
@@ -186,28 +185,28 @@ void autonomous(void) {
 
 void usercontrol(void) {
     // User control code here, inside the loop
-    MotorPuncher.stop(brakeType::coast);
     Drivetrain.stop(brakeType::brake);
     while (1) {
         // This is the main execution loop for the user control program.
         // Each time through the loop your program should update motor + servo
         // values based on feedback from the joysticks.
 
-        // ........................................................................
-        // Insert user code here. This is where you use the joystick values to
-        // update your motors, etc.
-        // ........................................................................
-        L = Controller1.Axis3.position();
-        R = Controller1.Axis2.position();
-        LeftDrive.spin(forward,L,percent);
-        RightDrive.spin(forward,R,percent);
+    	// ........................................................................
+    	// Insert user code here. This is where you use the joystick values to
+    	// update your motors, etc.
+    	// ........................................................................
 
-        // Puncher
+		// drive
+		L = Controller1.Axis3.position();
+    	R = Controller1.Axis2.position();
         if (Controller1.ButtonR2.pressing()) {
-            MotorPuncher.spin(forward,200,velocityUnits::rpm);
+    	    LeftDrive.spin(forward,L,velocityUnits::rpm);
+    	    RightDrive.spin(forward,R,velocityUnits::rpm);
         } else {
-            MotorPuncher.spin(forward,0,velocityUnits::rpm);
+    	    LeftDrive.spin(forward,L,percent);
+    	    RightDrive.spin(forward,R,percent);
         }
+
 
 
         //wings
