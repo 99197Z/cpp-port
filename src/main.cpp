@@ -201,11 +201,11 @@ void usercontrol(void) {
 		L = Controller1.Axis3.position();
     	R = Controller1.Axis2.position();
         if (Controller1.ButtonR2.pressing()) {
-    	    LeftDrive.spin(forward,L,percent);
-    	    RightDrive.spin(forward,R,percent);
-        } else {
     	    LeftDrive.spin(forward,L,velocityUnits::rpm);
     	    RightDrive.spin(forward,R,velocityUnits::rpm);
+        } else {
+    	    LeftDrive.spin(forward,L,percent);
+    	    RightDrive.spin(forward,R,percent);
         }
 
         // Puncher
