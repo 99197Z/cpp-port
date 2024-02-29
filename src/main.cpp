@@ -39,7 +39,6 @@ motor MotorRb = motor(PORT7, ratio18_1, false);
 motor_group RightDrive = motor_group(MotorRf, MotorRb);
 //drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
 
-motor MotorPuncher = motor(PORT15, ratio18_1, true); 
 
 motor MotorWingL = motor(PORT18, ratio18_1, true);
 motor MotorWingR = motor(PORT6, ratio18_1, false);
@@ -185,7 +184,6 @@ void autonomous(void) {
 
 void usercontrol(void) {
     // User control code here, inside the loop
-    MotorPuncher.stop(brakeType::coast);
     Drivetrain.stop(brakeType::brake);
     while (1) {
         // This is the main execution loop for the user control program.
@@ -208,12 +206,6 @@ void usercontrol(void) {
     	    RightDrive.spin(forward,R,percent);
         }
 
-        // Puncher
-        if (Controller1.ButtonR2.pressing()) {
-            MotorPuncher.spin(forward,200,velocityUnits::rpm);
-        } else {
-            MotorPuncher.spin(forward,0,velocityUnits::rpm);
-        }
 
 
         //wings

@@ -7,7 +7,6 @@ extern brain Brain;
 extern smartdrive Drivetrain;
 extern motor_group LeftDrive;
 extern motor_group RightDrive;
-extern motor MotorPuncher;
 
 void atton() {
 	extendWings();
@@ -15,7 +14,6 @@ void atton() {
   	RightDrive.spin(forward,200,velocityUnits::rpm);
   	wait( 1300, timeUnits::msec );
 
-	MotorPuncher.spin(forward,200,velocityUnits::rpm); // Puncher
 	wait( 200, timeUnits::msec );
 
   	LeftDrive.spin(reverse,100,velocityUnits::rpm);
@@ -33,7 +31,6 @@ void atton() {
 	LeftDrive.spin(forward,200,velocityUnits::rpm);   // SPINNN
   	RightDrive.spin(forward,-200,velocityUnits::rpm); // SPINNN
 
-	MotorPuncher.stop(brakeType::coast);
   	Drivetrain.stop(brakeType::brake);
 	retractWings();
 }
