@@ -40,7 +40,7 @@ motor_group RightDrive = motor_group(MotorRf, MotorRb);
 //drivetrain Drivetrain = drivetrain(LeftDrive, RightDrive, 319.19, 320, 165, mm, 1);
 
 
-motor MotorWingL = motor(PORT18, ratio18_1, true);
+motor MotorWingL = motor(PORT17, ratio18_1, true);
 motor MotorWingR = motor(PORT6, ratio18_1, false);
 motor_group WingGroup = motor_group(MotorWingL, MotorWingR);
 
