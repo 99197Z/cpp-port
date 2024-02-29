@@ -9,6 +9,7 @@ void display(int code);
 void extendWings();
 void retractWings();
 void toggleWings();
+int hardwareTask();
 
 double motorTemps();
 

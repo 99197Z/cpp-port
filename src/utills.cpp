@@ -1,11 +1,20 @@
 #include "vex.h"
+#include <iostream>
+#include <string>
+
+
 
 using namespace vex;
+
+using std::cout;
+using std::endl;
+using std::string;
 
 extern motor_group WingGroup;
 
 enum wingsState : unsigned int { retracted, extended };
 wingsState WingsPos = wingsState::retracted;
+wingsState WingsGoal = wingsState::retracted;
 
 
 extern led LedR1;
@@ -73,13 +82,28 @@ void retractWings() {
 }
 
 void toggleWings() {
-    if (WingsPos == wingsState::retracted) {
-        extendWings();
-        WingsPos = wingsState::extended;
-    } else if (WingsPos == wingsState::extended) {
-        retractWings();
-        WingsPos = wingsState::retracted;
+    if (WingsGoal == wingsState::retracted) {
+        WingsGoal = wingsState::extended;
+    } else if (WingsGoal == wingsState::extended) {
+        WingsGoal = wingsState::retracted;
     }
+}
+
+int hardwareTask() {
+    std::cout << "Hardware Started" << std::endl;
+    while (1) {
+        if (WingsPos != WingsGoal) {
+            std::cout << "Wings" << std::endl;
+            if (WingsPos == wingsState::retracted) {
+                extendWings();
+            } else if (WingsPos == wingsState::extended) {
+                retractWings();
+            }
+        }
+
+        wait(125, msec);
+    }
+    
 }
 
 
