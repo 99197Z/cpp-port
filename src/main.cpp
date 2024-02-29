@@ -132,8 +132,7 @@ int logTask() {
         std::cout << "logging Started" << std::endl;
 		uint8_t tempBuf[0];
     	Brain.SDcard.savefile("match.bin", tempBuf, 0);
-		while (1)
-		{
+		while (1) {
     	  	union thing {
     	  	    uint8_t result[9];  // 4 per int, 1 per char
     	  	    struct loggedData {
