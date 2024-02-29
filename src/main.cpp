@@ -92,18 +92,19 @@ void pre_auton(void) {
 /*                             Threaded Functions                            */
 /*---------------------------------------------------------------------------*/
 int displayTask() {
+    std::cout << "Display Started" << std::endl;
     while(1) {
-        // display some useful info
-        Brain.Screen.setCursor(2,1);
-        Brain.Screen.print( "  MotorLb    speed: %4.0f   position: %6.2f", MotorLb.velocity( percent ), MotorLb.position( rev ) );
-        Brain.Screen.newLine();
-        Brain.Screen.print( "  MotorLf    speed: %4.0f   position: %6.2f", MotorLf.velocity( percent ), MotorLf.position( rev ));
-        Brain.Screen.newLine();
-        Brain.Screen.print( "  MotorRb    speed: %4.0f   position: %6.2f", MotorRb.velocity( percent ), MotorRb.position( rev ));
-        Brain.Screen.newLine();
-        Brain.Screen.print( "  MotorRf    speed: %4.0f   position: %6.2f", MotorRf.velocity( percent ), MotorRf.position( rev ));
-        Brain.Screen.newLine();
-        Brain.Screen.newLine();
+      	// display some useful info
+      	Brain.Screen.setCursor(2,1);
+      	Brain.Screen.print( "  MotorLb    speed: %4.0f   temps *C: %6.2f", MotorLb.velocity( percent ), MotorLb.temperature(temperatureUnits::celsius) );
+      	Brain.Screen.newLine();
+      	Brain.Screen.print( "  MotorLf    speed: %4.0f   temps *C: %6.2f", MotorLf.velocity( percent ), MotorLf.temperature(temperatureUnits::celsius));
+      	Brain.Screen.newLine();
+      	Brain.Screen.print( "  MotorRb    speed: %4.0f   temps *C: %6.2f", MotorRb.velocity( percent ), MotorRb.temperature(temperatureUnits::celsius));
+      	Brain.Screen.newLine();
+      	Brain.Screen.print( "  MotorRf    speed: %4.0f   temps *C: %6.2f", MotorRf.velocity( percent ), MotorRf.temperature(temperatureUnits::celsius));
+      	Brain.Screen.newLine();
+      	Brain.Screen.newLine();
 
         // motor group velocity and position is returned for the first motor in the group
         Brain.Screen.print( "  leftDrive  speed: %4.0f   position: %6.2f", LeftDrive.velocity( percent ), LeftDrive.position( rev ));
@@ -117,7 +118,7 @@ int displayTask() {
         Brain.Screen.newLine();
 
         Controller1.Screen.setCursor(1,1);
-        Controller1.Screen.print("Temp %.1f",ConvertPCTdegC(Drivetrain.temperature(percent)));
+        Controller1.Screen.print("Temp %2.1f",motorTemps());
 
         // no need to run this loop too quickly
         wait( 20, timeUnits::msec );
@@ -128,6 +129,7 @@ int displayTask() {
 
 int logTask() {
 	if (Brain.SDcard.isInserted()) {
+        std::cout << "logging Started" << std::endl;
 		uint8_t tempBuf[0];
     	Brain.SDcard.savefile("match.bin", tempBuf, 0);
 		while (1)
@@ -155,6 +157,7 @@ int logTask() {
 		return 0;
 	} else {
 		display(0b1001);
+        std::cout << "No SD Card, logging can not happen" << std::endl;
 		return -1;
 	}
 	

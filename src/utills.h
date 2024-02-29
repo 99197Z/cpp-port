@@ -10,4 +10,6 @@ void extendWings();
 void retractWings();
 void toggleWings();
 
+double motorTemps();
+
 #endif
