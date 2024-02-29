@@ -95,6 +95,7 @@ void pre_auton(void) {
 /*                             Threaded Functions                            */
 /*---------------------------------------------------------------------------*/
 int displayTask() {
+    std::cout << "Display Started" << std::endl;
     while(1) {
       	// display some useful info
       	Brain.Screen.setCursor(2,1);
@@ -131,6 +132,7 @@ int displayTask() {
 
 int logTask() {
 	if (Brain.SDcard.isInserted()) {
+        std::cout << "logging Started" << std::endl;
 		uint8_t tempBuf[0];
     	Brain.SDcard.savefile("match.bin", tempBuf, 0);
 		while (1)
@@ -158,6 +160,7 @@ int logTask() {
 		return 0;
 	} else {
 		display(0b1001);
+        std::cout << "No SD Card, logging can not happen" << std::endl;
 		return -1;
 	}
 	
