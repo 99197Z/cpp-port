@@ -55,6 +55,8 @@ struct buttons
 {
     bool up;
     bool down;
+    bool left;
+    bool right;
 } Buttons;
 
 
