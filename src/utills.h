@@ -13,4 +13,6 @@ int hardwareTask();
 
 double motorTemps();
 
+double DriveDistance(double motorRPM,double time);
+
 #endif

@@ -118,7 +118,7 @@ int displayTask() {
         Brain.Screen.newLine();
 
         Controller1.Screen.setCursor(1,1);
-        Controller1.Screen.print("Temp %2.1f",motorTemps());
+        Controller1.Screen.print("D %2.0f*C|B %2.0f*C %1.0fV",motorTemps(),Brain.Battery.temperature(celsius),Brain.Battery.voltage());
 
         // no need to run this loop too quickly
         wait( 20, timeUnits::msec );
