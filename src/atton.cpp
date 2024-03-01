@@ -14,7 +14,9 @@ extern int autonToRun;
 
 void atton() {
 	if (autonToRun == 4) {
-		LeftDrive.spin(forward,150,velocityUnits::rpm);
+		while (1)
+		{
+			LeftDrive.spin(forward,150,velocityUnits::rpm);
   		RightDrive.spin(forward,150,velocityUnits::rpm);
   		wait( 1500, timeUnits::msec );
 
@@ -22,6 +24,9 @@ void atton() {
   		LeftDrive.spin(reverse,150,velocityUnits::rpm);
   		RightDrive.spin(reverse,150,velocityUnits::rpm);
   		wait( 1500, timeUnits::msec );
+		}
+		
+		
 	}
     LeftDrive.spin(forward,150,velocityUnits::rpm);
   	RightDrive.spin(forward,150,velocityUnits::rpm);
