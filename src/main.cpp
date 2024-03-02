@@ -10,6 +10,7 @@
 #include "vex.h"
 #include "utills.h"
 #include "atton.h"
+#include "ui.h"
 #include <iostream>
 #include <string>
 
@@ -22,6 +23,8 @@ using std::string;
 // A global instance of competition
 competition Competition;
 brain Brain;
+
+int autonToRun = 0;
 
 led LedR1 = led(Brain.ThreeWirePort.A);
 led LedR2 = led(Brain.ThreeWirePort.B);
@@ -229,7 +232,7 @@ void usercontrol(void) {
 // Main will set up the competition functions and callbacks.
 int main() {
     // Set up callbacks for autonomous and driver control periods.
-    task displayTaskInstance( displayTask );
+    task displayTaskInstance( UITask );
     task logingTask(logTask);
     task hardwareActionTask(hardwareTask);
     Competition.autonomous(autonomous);
@@ -237,6 +240,7 @@ int main() {
 
     // Run the pre-autonomous function.
     pre_auton();
+
 
     // Prevent main from exiting with an infinite loop.
     while (true) {
