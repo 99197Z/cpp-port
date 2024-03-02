@@ -1,17 +1,29 @@
 #include "vex.h"
+#include <iostream>
+#include <string>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 
 using namespace vex;
+
+using std::cout;
+using std::endl;
+using std::string;
 
 extern motor_group WingGroup;
 
 enum wingsState : unsigned int { retracted, extended };
 wingsState WingsPos = wingsState::retracted;
+wingsState WingsGoal = wingsState::retracted;
 
+double driveGearRatio = 7/5;
 
 extern led LedR1;
 extern led LedR2;
 extern led LedY1;
 extern led LedY2;
+extern smartdrive Drivetrain;
 extern semaphore semaphore_leds;
 
 extern motor MotorLf;
@@ -19,10 +31,14 @@ extern motor MotorLb;
 extern motor MotorRf;
 extern motor MotorRb;
 
+extern controller Controller1;
+
 #include <memory>
 #include <string>
 using std::string;
 using std::max;
+
+int wingMoveAtempts = 0;
 
 
 double ConvertPCTdegC(double percent) {
@@ -71,15 +87,48 @@ void retractWings() {
 }
 
 void toggleWings() {
-    if (WingsPos == wingsState::retracted) {
-        extendWings();
-        WingsPos = wingsState::extended;
-    } else if (WingsPos == wingsState::extended) {
-        retractWings();
-        WingsPos = wingsState::retracted;
+    if (WingsGoal == wingsState::retracted) {
+        WingsGoal = wingsState::extended;
+    } else if (WingsGoal == wingsState::extended) {
+        WingsGoal = wingsState::retracted;
     }
 }
 
+int hardwareTask() {
+    std::cout << "Hardware Started" << std::endl;
+    while (1) {
+        if (WingsPos != WingsGoal) {
+            wingMoveAtempts++;
+            std::cout << "Wings" << std::endl;
+            if (wingMoveAtempts >= 5) {
+                std::cout << "Wings move failed" << std::endl;
+                Controller1.rumble("...");
+                return -22;
+            }
+            if (WingsPos == wingsState::retracted) {
+                extendWings();
+                wingMoveAtempts--;
+            } else if (WingsPos == wingsState::extended) {
+                retractWings();
+                wingMoveAtempts--;
+            }
+
+        }
+
+        wait(125, msec);
+    }
+    
+}
+
+double wheelRPM(double motorRPM) {
+    return driveGearRatio*motorRPM;
+}
+double DriveSpeed(double motorRPM) {
+    return (2*M_PI*(50.8))/(wheelRPM(motorRPM)/60)/1000;
+}
+double DriveDistance(double motorRPM,double time) {
+    return (DriveSpeed(motorRPM)*time);
+}
 
 // Led
 void display(int code) {
