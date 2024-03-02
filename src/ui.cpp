@@ -75,6 +75,8 @@ int UITask() {
               autonSel = false;
             }
           }
+        } else {
+            autonSel = false;
         }
 
         Brain.Screen.render();
